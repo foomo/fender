@@ -8,13 +8,15 @@ const RuleRegex Rule = "regex"
 
 // NewFendRegexError constructor
 func NewFendRegexError() *RuleError {
-	return NewFendError(RuleRegex, RuleRegex.String())
+	return NewRuleError(RuleRegex)
 }
 
 // Regex validation using go standard package
-func Regex(v string, regexp *regexp.Regexp) error {
-	if !regexp.MatchString(v) {
-		return NewFendRegexError()
+func Regex(v string, regexp *regexp.Regexp) Fend {
+	return func() *RuleError {
+		if !regexp.MatchString(v) {
+			return NewFendRegexError()
+		}
+		return nil
 	}
-	return nil
 }

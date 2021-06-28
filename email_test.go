@@ -1,4 +1,3 @@
-//nolint:dupl
 package fender
 
 import (
@@ -42,7 +41,7 @@ func TestEmail(t *testing.T) {
 	}
 	for email, valid := range testEmails {
 		t.Run(email, func(t *testing.T) {
-			if err := Email(email, false); (err == nil) != valid {
+			if err := Email(email, false)(); (err == nil) != valid {
 				t.Errorf("Email() error = %v, wantErr %v", err, !valid)
 			}
 		})
@@ -86,7 +85,7 @@ func TestEmailRFC5322(t *testing.T) {
 	}
 	for email, valid := range testEmails {
 		t.Run(email, func(t *testing.T) {
-			if err := EmailRFC5322(email, false); (err == nil) != valid {
+			if err := EmailRFC5322(email, false)(); (err == nil) != valid {
 				t.Errorf("Email() error = %v, wantErr %v", err, !valid)
 			}
 		})
@@ -130,7 +129,7 @@ func TestEmailWeak(t *testing.T) {
 	}
 	for email, valid := range testEmails {
 		t.Run(email, func(t *testing.T) {
-			if err := EmailWeak(email); (err == nil) != valid {
+			if err := EmailWeak(email)(); (err == nil) != valid {
 				t.Errorf("Email() error = %v, wantErr %v", err, !valid)
 			}
 		})

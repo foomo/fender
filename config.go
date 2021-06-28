@@ -2,14 +2,14 @@ package fender
 
 const (
 	DefaultRuleDelimiter  = ";"
-	DefaultNameDelimiter  = ":"
-	DefaultErrorDelimiter = ","
+	DefaultFieldDelimiter = ":"
 	DefaultMetaDelimiter  = "|"
+	DefaultErrorDelimiter = ","
 )
 
 var (
+	FieldDelimiter = DefaultFieldDelimiter
 	RuleDelimiter  = DefaultRuleDelimiter
-	NameDelimiter  = DefaultNameDelimiter
 	ErrorDelimiter = DefaultErrorDelimiter
 	MetaDelimiter  = DefaultMetaDelimiter
 )

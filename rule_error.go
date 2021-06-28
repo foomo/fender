@@ -1,15 +1,17 @@
 package fender
 
+import "strings"
+
 type RuleError struct {
 	Rule Rule
 	Meta string
 }
 
-// NewFendError constructor
-func NewFendError(fend Rule, meta string) *RuleError {
+// NewRuleError constructor
+func NewRuleError(fend Rule, meta ...string) *RuleError {
 	return &RuleError{
 		Rule: fend,
-		Meta: meta,
+		Meta: strings.Join(meta, MetaDelimiter),
 	}
 }
 

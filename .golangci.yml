@@ -28,7 +28,6 @@ linters:
     - bodyclose
     - deadcode
     - dogsled
-    - dupl
     - exhaustive
     - exportloopref
     - gci
@@ -66,6 +65,7 @@ linters:
     - exportloopref
 
     # unused
+    # - dupl
     # - godot
     # - gocognit
     # - nlreturn

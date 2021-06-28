@@ -23,46 +23,52 @@ var (
 
 // NewFendEmailError constructor
 func NewFendEmailError() *RuleError {
-	return NewFendError(RuleEmail, string(RuleEmail))
+	return NewRuleError(RuleEmail)
 }
 
 // Email validation using go standard package
-func Email(v string, lookup bool) error {
-	a, err := mail.ParseAddress(v)
-	if err != nil {
-		return NewFendEmailError()
-	}
+func Email(v string, lookup bool) Fend {
+	return func() *RuleError {
+		a, err := mail.ParseAddress(v)
+		if err != nil {
+			return NewFendEmailError()
+		}
 
-	if lookup {
-		return emailHostLookup(a.Address)
-	}
+		if lookup {
+			return emailHostLookup(a.Address)
+		}
 
-	return nil
+		return nil
+	}
 }
 
 // EmailWeak validation using simple regex
-func EmailWeak(v string) error {
-	if !emailRegexWeak.MatchString(v) {
-		return NewFendEmailError()
-	}
+func EmailWeak(v string) Fend {
+	return func() *RuleError {
+		if !emailRegexWeak.MatchString(v) {
+			return NewFendEmailError()
+		}
 
-	return nil
+		return nil
+	}
 }
 
 // EmailRFC5322 validation using RFC5322 regex
-func EmailRFC5322(v string, lookup bool) error {
-	if !emailRegexRFC5322.MatchString(v) {
-		return NewFendEmailError()
-	}
+func EmailRFC5322(v string, lookup bool) Fend {
+	return func() *RuleError {
+		if !emailRegexRFC5322.MatchString(v) {
+			return NewFendEmailError()
+		}
 
-	if lookup {
-		return emailHostLookup(v)
-	}
+		if lookup {
+			return emailHostLookup(v)
+		}
 
-	return nil
+		return nil
+	}
 }
 
-func emailHostLookup(v string) error {
+func emailHostLookup(v string) *RuleError {
 	at := strings.LastIndex(v, "@")
 	if at < 0 {
 		return NewFendEmailError()

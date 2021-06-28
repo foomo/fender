@@ -8,12 +8,14 @@ type Enumerator interface {
 
 // NewFendEnumError constructor
 func NewFendEnumError() *RuleError {
-	return NewFendError(RuleEnum, string(RuleEnum))
+	return NewRuleError(RuleEnum)
 }
 
-func Enum(v Enumerator) error {
-	if !v.Valid() {
-		return NewFendEnumError()
+func Enum(v Enumerator) Fend {
+	return func() *RuleError {
+		if !v.Valid() {
+			return NewFendEnumError()
+		}
+		return nil
 	}
-	return nil
 }

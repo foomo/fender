@@ -8,61 +8,203 @@ type RequiredError struct {
 
 // NewFendRequiredError constructor
 func NewFendRequiredError() *RuleError {
-	return NewFendError(RuleRequired, string(RuleRequired))
+	return NewRuleError(RuleRequired)
 }
 
-func RequiredInt(v int) error {
-	if v == 0 {
-		return NewFendRequiredError()
+func RequiredInt(v int) Fend {
+	return func() *RuleError {
+		if v == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
 	}
-	return nil
 }
 
-func RequiredInt8(v int8) error {
-	if v == 0 {
-		return NewFendRequiredError()
+func RequiredInt8(v int8) Fend {
+	return func() *RuleError {
+		if v == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
 	}
-	return nil
 }
 
-func RequiredInt32(v int32) error {
-	if v == 0 {
-		return NewFendRequiredError()
+func RequiredInt32(v int32) Fend {
+	return func() *RuleError {
+		if v == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
 	}
-	return nil
 }
 
-func RequiredInt64(v int64) error {
-	if v == 0 {
-		return NewFendRequiredError()
+func RequiredInt64(v int64) Fend {
+	return func() *RuleError {
+		if v == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
 	}
-	return nil
 }
 
-func RequiredFloat32(v float32) error {
-	if v == 0 {
-		return NewFendRequiredError()
+func RequiredUInt(v uint) Fend {
+	return func() *RuleError {
+		if v == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
 	}
-	return nil
 }
 
-func RequiredFloat64(v float64) error {
-	if v == 0 {
-		return NewFendRequiredError()
+func RequiredUInt8(v uint8) Fend {
+	return func() *RuleError {
+		if v == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
 	}
-	return nil
 }
 
-func RequiredString(v string) error {
-	if v == "" {
-		return NewFendRequiredError()
+func RequiredUInt32(v uint32) Fend {
+	return func() *RuleError {
+		if v == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
 	}
-	return nil
 }
 
-func RequiredStrings(v []string) error {
-	if len(v) == 0 {
-		return NewFendRequiredError()
+func RequiredUInt64(v uint64) Fend {
+	return func() *RuleError {
+		if v == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
 	}
-	return nil
+}
+
+func RequiredFloat32(v float32) Fend {
+	return func() *RuleError {
+		if v == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredFloat64(v float64) Fend {
+	return func() *RuleError {
+		if v == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredString(v string) Fend {
+	return func() *RuleError {
+		if v == "" {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredInts(v []int) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredInt8s(v []int8) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredInt32s(v []int32) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredInt64s(v []int64) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredUInts(v []uint) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredUInt8s(v []uint8) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredUInt32s(v []uint32) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredUInt64s(v []uint64) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredFloat32s(v []float32) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredFloat64s(v []float64) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
+}
+
+func RequiredStrings(v []string) Fend {
+	return func() *RuleError {
+		if len(v) == 0 {
+			return NewFendRequiredError()
+		}
+		return nil
+	}
 }
