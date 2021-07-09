@@ -2,7 +2,6 @@ package rule
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/foomo/fender/config"
 	"github.com/go-playground/validator/v10"

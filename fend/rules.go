@@ -123,13 +123,11 @@ func Interface(v interface{}, rules ...rule.InterfaceRule) Fend {
 	}
 }
 
-func Validator(v rule.Validator, rules ...rule.ValidatorRule) Fend {
+func Valid(v rule.Validator) Fend {
 	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, rule := range rules {
-			ret = append(ret, rule(v))
+		return []rule.Rule{
+			rule.Valid()(v),
 		}
-		return ret
 	}
 }
 

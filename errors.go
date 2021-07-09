@@ -4,10 +4,11 @@ import (
 	"bytes"
 
 	"github.com/foomo/fender/config"
+	"github.com/foomo/fender/rule"
 )
 
 // Errors type
-type Errors map[string][]error
+type Errors map[string][]*rule.Error
 
 // String returns the string representation
 func (m Errors) String() string {

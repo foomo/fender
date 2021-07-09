@@ -1,7 +1,9 @@
 package fend
 
-func All(values ...Fend) []error {
-	var errs []error
+import "github.com/foomo/fender/rule"
+
+func All(values ...Fend) []*rule.Error {
+	var errs []*rule.Error
 	for _, value := range values {
 		for _, v := range value() {
 			if err := v(); err != nil {

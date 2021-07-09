@@ -45,7 +45,7 @@ func TestAllFirst(t *testing.T) {
 		assert.Len(t, errs, 2)
 		assert.Len(t, errs["foo"], 1)
 		assert.Len(t, errs["bar"], 1)
-		assert.EqualError(t, err, "foo:min|10;bar:min|10")
+		assert.EqualError(t, err, "foo:min=10;bar:min=10")
 	})
 
 	t.Run("errors combined", func(t *testing.T) {
