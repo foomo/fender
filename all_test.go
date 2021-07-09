@@ -22,15 +22,13 @@ func TestAll(t *testing.T) {
 	t.Run("errors", func(t *testing.T) {
 		err := fender.All(
 			fender.Field("foo", fend.String("", rule.RequiredString, rule.MinString(10))),
-			fender.Field("bar", fend.String("", rule.RequiredString, rule.MinString(10))),
+			fender.Field("bar", fend.String("bar", rule.RequiredString, rule.MinString(10))),
 		)
 		assert.Error(t, err)
 		assert.True(t, errors.Is(err, fender.Err))
 		errs := err.(*fender.Error).Errors()
 		assert.Len(t, errs, 2)
-		assert.Len(t, errs["foo"], 2)
-		assert.Len(t, errs["bar"], 2)
-		assert.EqualError(t, err, "foo:required,min|10;bar:required,min|10")
+		assert.EqualError(t, err, "foo:required;bar:min=10")
 	})
 
 	t.Run("errors combined", func(t *testing.T) {
@@ -42,7 +40,6 @@ func TestAll(t *testing.T) {
 		assert.True(t, errors.Is(err, fender.Err))
 		errs := err.(*fender.Error).Errors()
 		assert.Len(t, errs, 1)
-		assert.Len(t, errs["foo"], 4)
-		assert.EqualError(t, err, "foo:required,min|10,min|10,required")
+		assert.EqualError(t, err, "foo:required")
 	})
 }

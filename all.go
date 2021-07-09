@@ -5,8 +5,10 @@ import "github.com/foomo/fender/fend"
 func All(fields ...FendField) error {
 	errorsMap := Errors{}
 	for _, field := range fields {
-		if errs := fend.All(field.fends...); errs != nil {
-			errorsMap[field.name] = append(errorsMap[field.name], errs...)
+		if _, ok := errorsMap[field.name]; !ok {
+			if err := fend.First(field.fends...); err != nil {
+				errorsMap[field.name] = err
+			}
 		}
 	}
 	if len(errorsMap) > 0 {

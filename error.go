@@ -33,10 +33,8 @@ func (e *Error) Errors() Errors {
 }
 
 func (e *Error) First() error {
-	for _, errs := range e.fields {
-		if len(errs) > 0 {
-			return errs[0]
-		}
+	for _, err := range e.fields {
+		return err
 	}
 	return nil
 }
