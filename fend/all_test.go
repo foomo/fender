@@ -8,15 +8,13 @@ import (
 )
 
 func TestAll(t *testing.T) {
-
 	t.Run("success", func(t *testing.T) {
-		errs := All(String("foo", rule.RequiredString(), rule.MinString(2)))
+		errs := All(String("foo", rule.RequiredString, rule.MinString(2)))
 		assert.Empty(t, errs)
 	})
 
 	t.Run("errors", func(t *testing.T) {
-		errs := All(String("", rule.RequiredString(), rule.MinString(2)))
+		errs := All(String("", rule.RequiredString, rule.MinString(2)))
 		assert.Len(t, errs, 2)
 	})
-
 }

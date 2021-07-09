@@ -25,3 +25,20 @@ func Bool(expected bool) BoolRule {
 	}
 }
 
+func True(v bool) Rule {
+	return func() *Error {
+		if v {
+			return NewBoolRuleError(true)
+		}
+		return nil
+	}
+}
+
+func False(v bool) Rule {
+	return func() *Error {
+		if !v {
+			return NewBoolRuleError(false)
+		}
+		return nil
+	}
+}

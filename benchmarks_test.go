@@ -32,18 +32,18 @@ func BenchmarkSimpleStruct(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				u := &Test{}
 				if err := fender.All(
-					fender.Field("int", fend.Int(u.Int, rule.RequiredInt(), rule.MinInt(1), rule.MaxInt(5))),
-					fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8(), rule.MinInt8(1), rule.MaxInt8(5))),
-					fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32(), rule.MinInt32(1), rule.MaxInt32(5))),
-					fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64(), rule.MinInt64(1), rule.MaxInt64(5))),
-					fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt(), rule.MinUInt(1), rule.MaxUInt(5))),
-					fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8(), rule.MinUInt8(1), rule.MaxUInt8(5))),
-					fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32(), rule.MinUInt32(1), rule.MaxUInt32(5))),
-					fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64(), rule.MinUInt64(1), rule.MaxUInt64(5))),
-					fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32(), rule.MinFloat32(1), rule.MaxFloat32(5))),
-					fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64(), rule.MinFloat64(1), rule.MaxFloat64(5))),
+					fender.Field("int", fend.Int(u.Int, rule.RequiredInt, rule.MinInt(1), rule.MaxInt(5))),
+					fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8, rule.MinInt8(1), rule.MaxInt8(5))),
+					fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32, rule.MinInt32(1), rule.MaxInt32(5))),
+					fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64, rule.MinInt64(1), rule.MaxInt64(5))),
+					fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt, rule.MinUInt(1), rule.MaxUInt(5))),
+					fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8, rule.MinUInt8(1), rule.MaxUInt8(5))),
+					fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32, rule.MinUInt32(1), rule.MaxUInt32(5))),
+					fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64, rule.MinUInt64(1), rule.MaxUInt64(5))),
+					fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32, rule.MinFloat32(1), rule.MaxFloat32(5))),
+					fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64, rule.MinFloat64(1), rule.MaxFloat64(5))),
 					fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
-					fender.Field("string", fend.String(u.String, rule.RequiredString())),
+					fender.Field("string", fend.String(u.String, rule.RequiredString)),
 				); err != nil {
 					// b.Log("Fender: " + err.Error())
 				}
@@ -61,22 +61,21 @@ func BenchmarkSimpleStruct(b *testing.B) {
 	})
 
 	b.Run("invalid reused", func(b *testing.B) {
-
 		b.Run("fender", func(b *testing.B) {
 			u := &Test{}
 			fields := []fender.FendField{
-				fender.Field("int", fend.Int(u.Int, rule.RequiredInt(), rule.MinInt(1), rule.MaxInt(5))),
-				fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8(), rule.MinInt8(1), rule.MaxInt8(5))),
-				fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32(), rule.MinInt32(1), rule.MaxInt32(5))),
-				fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64(), rule.MinInt64(1), rule.MaxInt64(5))),
-				fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt(), rule.MinUInt(1), rule.MaxUInt(5))),
-				fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8(), rule.MinUInt8(1), rule.MaxUInt8(5))),
-				fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32(), rule.MinUInt32(1), rule.MaxUInt32(5))),
-				fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64(), rule.MinUInt64(1), rule.MaxUInt64(5))),
-				fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32(), rule.MinFloat32(1), rule.MaxFloat32(5))),
-				fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64(), rule.MinFloat64(1), rule.MaxFloat64(5))),
+				fender.Field("int", fend.Int(u.Int, rule.RequiredInt, rule.MinInt(1), rule.MaxInt(5))),
+				fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8, rule.MinInt8(1), rule.MaxInt8(5))),
+				fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32, rule.MinInt32(1), rule.MaxInt32(5))),
+				fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64, rule.MinInt64(1), rule.MaxInt64(5))),
+				fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt, rule.MinUInt(1), rule.MaxUInt(5))),
+				fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8, rule.MinUInt8(1), rule.MaxUInt8(5))),
+				fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32, rule.MinUInt32(1), rule.MaxUInt32(5))),
+				fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64, rule.MinUInt64(1), rule.MaxUInt64(5))),
+				fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32, rule.MinFloat32(1), rule.MaxFloat32(5))),
+				fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64, rule.MinFloat64(1), rule.MaxFloat64(5))),
 				fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
-				fender.Field("string", fend.String(u.String, rule.RequiredString())),
+				fender.Field("string", fend.String(u.String, rule.RequiredString)),
 			}
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
@@ -116,20 +115,20 @@ func BenchmarkSimpleStruct(b *testing.B) {
 					String:  "true",
 				}
 				if err := fender.All(
-					fender.Field("int", fend.Int(u.Int, rule.RequiredInt(), rule.MinInt(1), rule.MaxInt(5))),
-					fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8(), rule.MinInt8(1), rule.MaxInt8(5))),
-					fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32(), rule.MinInt32(1), rule.MaxInt32(5))),
-					fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64(), rule.MinInt64(1), rule.MaxInt64(5))),
-					fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt(), rule.MinUInt(1), rule.MaxUInt(5))),
-					fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8(), rule.MinUInt8(1), rule.MaxUInt8(5))),
-					fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32(), rule.MinUInt32(1), rule.MaxUInt32(5))),
-					fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64(), rule.MinUInt64(1), rule.MaxUInt64(5))),
-					fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32(), rule.MinFloat32(1), rule.MaxFloat32(5))),
-					fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64(), rule.MinFloat64(1), rule.MaxFloat64(5))),
+					fender.Field("int", fend.Int(u.Int, rule.RequiredInt, rule.MinInt(1), rule.MaxInt(5))),
+					fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8, rule.MinInt8(1), rule.MaxInt8(5))),
+					fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32, rule.MinInt32(1), rule.MaxInt32(5))),
+					fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64, rule.MinInt64(1), rule.MaxInt64(5))),
+					fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt, rule.MinUInt(1), rule.MaxUInt(5))),
+					fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8, rule.MinUInt8(1), rule.MaxUInt8(5))),
+					fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32, rule.MinUInt32(1), rule.MaxUInt32(5))),
+					fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64, rule.MinUInt64(1), rule.MaxUInt64(5))),
+					fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32, rule.MinFloat32(1), rule.MaxFloat32(5))),
+					fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64, rule.MinFloat64(1), rule.MaxFloat64(5))),
 					fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
-					fender.Field("string", fend.String(u.String, rule.RequiredString())),
+					fender.Field("string", fend.String(u.String, rule.RequiredString)),
 				); err != nil {
-					// b.Log("Fender: " + err.Error())
+					b.Log("Fender: " + err.Error())
 				}
 			}
 		})
@@ -152,14 +151,13 @@ func BenchmarkSimpleStruct(b *testing.B) {
 					String:  "true",
 				}
 				if err := v.Struct(u); err != nil {
-					// b.Log("Playground: " + err.Error())
+					b.Log("Playground: " + err.Error())
 				}
 			}
 		})
 	})
 
 	b.Run("success reused", func(b *testing.B) {
-
 		b.Run("fender", func(b *testing.B) {
 			u := &Test{
 				Int:     1,
@@ -176,23 +174,23 @@ func BenchmarkSimpleStruct(b *testing.B) {
 				String:  "true",
 			}
 			fields := []fender.FendField{
-				fender.Field("int", fend.Int(u.Int, rule.RequiredInt(), rule.MinInt(1), rule.MaxInt(5))),
-				fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8(), rule.MinInt8(1), rule.MaxInt8(5))),
-				fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32(), rule.MinInt32(1), rule.MaxInt32(5))),
-				fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64(), rule.MinInt64(1), rule.MaxInt64(5))),
-				fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt(), rule.MinUInt(1), rule.MaxUInt(5))),
-				fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8(), rule.MinUInt8(1), rule.MaxUInt8(5))),
-				fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32(), rule.MinUInt32(1), rule.MaxUInt32(5))),
-				fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64(), rule.MinUInt64(1), rule.MaxUInt64(5))),
-				fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32(), rule.MinFloat32(1), rule.MaxFloat32(5))),
-				fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64(), rule.MinFloat64(1), rule.MaxFloat64(5))),
+				fender.Field("int", fend.Int(u.Int, rule.RequiredInt, rule.MinInt(1), rule.MaxInt(5))),
+				fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8, rule.MinInt8(1), rule.MaxInt8(5))),
+				fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32, rule.MinInt32(1), rule.MaxInt32(5))),
+				fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64, rule.MinInt64(1), rule.MaxInt64(5))),
+				fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt, rule.MinUInt(1), rule.MaxUInt(5))),
+				fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8, rule.MinUInt8(1), rule.MaxUInt8(5))),
+				fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32, rule.MinUInt32(1), rule.MaxUInt32(5))),
+				fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64, rule.MinUInt64(1), rule.MaxUInt64(5))),
+				fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32, rule.MinFloat32(1), rule.MaxFloat32(5))),
+				fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64, rule.MinFloat64(1), rule.MaxFloat64(5))),
 				fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
-				fender.Field("string", fend.String(u.String, rule.RequiredString())),
+				fender.Field("string", fend.String(u.String, rule.RequiredString)),
 			}
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
 				if err := fender.All(fields...); err != nil {
-					// b.Log("Fender: " + err.Error())
+					b.Log("Fender: " + err.Error())
 				}
 			}
 		})
@@ -216,7 +214,7 @@ func BenchmarkSimpleStruct(b *testing.B) {
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
 				if err := v.Struct(u); err != nil {
-					// b.Log("Playground: " + err.Error())
+					b.Log("Playground: " + err.Error())
 				}
 			}
 		})

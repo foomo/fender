@@ -9,14 +9,13 @@ import (
 )
 
 func TestFirstError(t *testing.T) {
-
 	t.Run("success", func(t *testing.T) {
-		err := First(String("foo", rule.RequiredString()))
+		err := First(String("foo", rule.RequiredString))
 		assert.NoError(t, err)
 	})
 
 	t.Run("error", func(t *testing.T) {
-		err := First(String("", rule.RequiredString()))
+		err := First(String("", rule.RequiredString))
 		assert.Error(t, err)
 		assert.True(t, errors.Is(err, rule.Err))
 		assert.True(t, errors.Is(errors.Cause(err), rule.ErrRequired))
@@ -24,7 +23,7 @@ func TestFirstError(t *testing.T) {
 	})
 
 	t.Run("second error", func(t *testing.T) {
-		err := First(String("foo", rule.RequiredString(), rule.MinString(10)))
+		err := First(String("foo", rule.RequiredString, rule.MinString(10)))
 		assert.Error(t, err)
 		assert.True(t, errors.Is(err, rule.Err))
 		assert.True(t, errors.Is(errors.Cause(err), rule.ErrMin))
@@ -33,7 +32,7 @@ func TestFirstError(t *testing.T) {
 
 	t.Run("third error", func(t *testing.T) {
 		err := First(
-			String("foo", rule.RequiredString()),
+			String("foo", rule.RequiredString),
 			String("bar", rule.MinString(10)),
 		)
 		assert.Error(t, err)

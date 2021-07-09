@@ -23,4 +23,3 @@ type (
 	ValidatorRule func(v Validator) Rule
 	InterfaceRule func(v interface{}) Rule
 )
-

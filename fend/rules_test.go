@@ -49,33 +49,33 @@ func BenchmarkString(b *testing.B) {
 	})
 	b.Run("fender all", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			fend.All(
-				fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
+			_ = fend.All(
+				fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
 			)
 		}
 	})
 	b.Run("fender first", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			fend.First(
-				fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
-				// fend.String(test, rule.MinString(10), rule.RequiredString()),
+			_ = fend.First(
+				fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
+				// fend.String(test, rule.MinString(10), rule.RequiredString),
 			)
 		}
 	})

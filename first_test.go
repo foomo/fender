@@ -10,12 +10,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-
-
 func TestFirst(t *testing.T) {
-
 	t.Run("success", func(t *testing.T) {
-		err := fender.First(fender.Field("foo", fend.String("foo", rule.RequiredString())))
+		err := fender.First(fender.Field("foo", fend.String("foo", rule.RequiredString)))
 		assert.NoError(t, err)
 	})
 
@@ -39,4 +36,3 @@ func TestFirst(t *testing.T) {
 		assert.EqualError(t, err, "foo:min=10")
 	})
 }
-
