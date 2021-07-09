@@ -4,6 +4,8 @@ import (
 	"testing"
 
 	"github.com/foomo/fender"
+	"github.com/foomo/fender/fend"
+	"github.com/foomo/fender/rule"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -11,83 +13,210 @@ import (
 
 func BenchmarkSimpleStruct(b *testing.B) {
 	type Test struct {
-		FirstName string `validate:"required"`
-		LastName  string `validate:"required"`
-		Age       int    `validate:"required,min=18"`
-		Email     string `validate:"email"`
-		Street    string `validate:"required"`
-		City      string `validate:"required"`
-		Planet    string `validate:"required"`
-		Phone     string `validate:"required"`
+		Int     int     `validate:"required,min=1,max=5"`
+		Int8    int8    `validate:"required,min=1,max=5"`
+		Int32   int32   `validate:"required,min=1,max=5"`
+		Int64   int64   `validate:"required,min=1,max=5"`
+		UInt    uint    `validate:"required,min=1,max=5"`
+		UInt8   uint8   `validate:"required,min=1,max=5"`
+		UInt32  uint32  `validate:"required,min=1,max=5"`
+		UInt64  uint64  `validate:"required,min=1,max=5"`
+		Float32 float32 `validate:"required,min=1,max=5"`
+		Float64 float64 `validate:"required,min=1,max=5"`
+		Bool    bool    `validate:"required"`
+		String  string  `validate:"required"`
 	}
 
-	b.Run("failure", func(b *testing.B) {
-		u := &Test{}
-
+	b.Run("invalid new", func(b *testing.B) {
 		b.Run("fender", func(b *testing.B) {
-			fields := fender.NewFields().
-				Add("firstName", fender.RequiredString(u.FirstName)).
-				Add("lastName", fender.RequiredString(u.LastName)).
-				Add("age", fender.RequiredInt(u.Age), fender.MinInt(u.Age, 18)).
-				Add("email", fender.Email(u.Email, false)).
-				Add("street", fender.RequiredString(u.Street)).
-				Add("city", fender.RequiredString(u.City)).
-				Add("planet", fender.RequiredString(u.Planet)).
-				Add("phone", fender.RequiredString(u.Phone))
-			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
-				if err := fields.AllFieldsErrors().Error(); err != nil {
-					b.Log("Fender: " + err.Error())
+				u := &Test{}
+				if err := fender.All(
+					fender.Field("int", fend.Int(u.Int, rule.RequiredInt(), rule.MinInt(1), rule.MaxInt(5))),
+					fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8(), rule.MinInt8(1), rule.MaxInt8(5))),
+					fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32(), rule.MinInt32(1), rule.MaxInt32(5))),
+					fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64(), rule.MinInt64(1), rule.MaxInt64(5))),
+					fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt(), rule.MinUInt(1), rule.MaxUInt(5))),
+					fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8(), rule.MinUInt8(1), rule.MaxUInt8(5))),
+					fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32(), rule.MinUInt32(1), rule.MaxUInt32(5))),
+					fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64(), rule.MinUInt64(1), rule.MaxUInt64(5))),
+					fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32(), rule.MinFloat32(1), rule.MaxFloat32(5))),
+					fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64(), rule.MinFloat64(1), rule.MaxFloat64(5))),
+					fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
+					fender.Field("string", fend.String(u.String, rule.RequiredString())),
+				); err != nil {
+					// b.Log("Fender: " + err.Error())
 				}
 			}
 		})
-
 		b.Run("playground", func(b *testing.B) {
-			v := validator.New()
-			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
+				v := validator.New()
+				u := &Test{}
 				if err := v.Struct(u); err != nil {
-					b.Log("Playground: " + err.Error())
+					// b.Log("Playground: " + err.Error())
 				}
 			}
 		})
 	})
 
-	b.Run("success", func(b *testing.B) {
-		u := &Test{
-			FirstName: "Badger",
-			LastName:  "Smith",
-			Age:       80,
-			City:      "string",
-			Email:     "Badger.Smith@email.com",
-			Street:    "Eavesdown Docks",
-			Planet:    "Persphone",
-			Phone:     "none",
-		}
+	b.Run("invalid reused", func(b *testing.B) {
+
 		b.Run("fender", func(b *testing.B) {
-			fields := fender.NewFields().
-				Add("firstName", fender.RequiredString(u.FirstName)).
-				Add("lastName", fender.RequiredString(u.LastName)).
-				Add("age", fender.MinInt(u.Age, 0), fender.MaxInt(u.Age, 130)).
-				Add("email", fender.Email(u.Email, false)).
-				Add("street", fender.RequiredString(u.Street)).
-				Add("city", fender.RequiredString(u.City)).
-				Add("planet", fender.RequiredString(u.Planet)).
-				Add("phone", fender.RequiredString(u.Phone))
+			u := &Test{}
+			fields := []fender.FendField{
+				fender.Field("int", fend.Int(u.Int, rule.RequiredInt(), rule.MinInt(1), rule.MaxInt(5))),
+				fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8(), rule.MinInt8(1), rule.MaxInt8(5))),
+				fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32(), rule.MinInt32(1), rule.MaxInt32(5))),
+				fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64(), rule.MinInt64(1), rule.MaxInt64(5))),
+				fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt(), rule.MinUInt(1), rule.MaxUInt(5))),
+				fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8(), rule.MinUInt8(1), rule.MaxUInt8(5))),
+				fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32(), rule.MinUInt32(1), rule.MaxUInt32(5))),
+				fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64(), rule.MinUInt64(1), rule.MaxUInt64(5))),
+				fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32(), rule.MinFloat32(1), rule.MaxFloat32(5))),
+				fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64(), rule.MinFloat64(1), rule.MaxFloat64(5))),
+				fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
+				fender.Field("string", fend.String(u.String, rule.RequiredString())),
+			}
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
-				if err := fields.AllFieldsErrors().Error(); err != nil {
-					b.Log("Fender: " + err.Error())
+				if err := fender.All(fields...); err != nil {
+					// b.Log("Fender: " + err.Error())
 				}
 			}
 		})
 
 		b.Run("playground", func(b *testing.B) {
 			v := validator.New()
+			u := &Test{}
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
 				if err := v.Struct(u); err != nil {
-					b.Log("Playground: " + err.Error())
+					// b.Log("Playground: " + err.Error())
+				}
+			}
+		})
+	})
+
+	b.Run("success new", func(b *testing.B) {
+		b.Run("fender", func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				u := &Test{
+					Int:     1,
+					Int8:    1,
+					Int32:   1,
+					Int64:   1,
+					UInt:    1,
+					UInt8:   1,
+					UInt32:  1,
+					UInt64:  1,
+					Float32: 1,
+					Float64: 1,
+					Bool:    true,
+					String:  "true",
+				}
+				if err := fender.All(
+					fender.Field("int", fend.Int(u.Int, rule.RequiredInt(), rule.MinInt(1), rule.MaxInt(5))),
+					fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8(), rule.MinInt8(1), rule.MaxInt8(5))),
+					fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32(), rule.MinInt32(1), rule.MaxInt32(5))),
+					fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64(), rule.MinInt64(1), rule.MaxInt64(5))),
+					fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt(), rule.MinUInt(1), rule.MaxUInt(5))),
+					fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8(), rule.MinUInt8(1), rule.MaxUInt8(5))),
+					fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32(), rule.MinUInt32(1), rule.MaxUInt32(5))),
+					fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64(), rule.MinUInt64(1), rule.MaxUInt64(5))),
+					fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32(), rule.MinFloat32(1), rule.MaxFloat32(5))),
+					fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64(), rule.MinFloat64(1), rule.MaxFloat64(5))),
+					fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
+					fender.Field("string", fend.String(u.String, rule.RequiredString())),
+				); err != nil {
+					// b.Log("Fender: " + err.Error())
+				}
+			}
+		})
+
+		b.Run("playground", func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				v := validator.New()
+				u := &Test{
+					Int:     1,
+					Int8:    1,
+					Int32:   1,
+					Int64:   1,
+					UInt:    1,
+					UInt8:   1,
+					UInt32:  1,
+					UInt64:  1,
+					Float32: 1,
+					Float64: 1,
+					Bool:    true,
+					String:  "true",
+				}
+				if err := v.Struct(u); err != nil {
+					// b.Log("Playground: " + err.Error())
+				}
+			}
+		})
+	})
+
+	b.Run("success reused", func(b *testing.B) {
+
+		b.Run("fender", func(b *testing.B) {
+			u := &Test{
+				Int:     1,
+				Int8:    1,
+				Int32:   1,
+				Int64:   1,
+				UInt:    1,
+				UInt8:   1,
+				UInt32:  1,
+				UInt64:  1,
+				Float32: 1,
+				Float64: 1,
+				Bool:    true,
+				String:  "true",
+			}
+			fields := []fender.FendField{
+				fender.Field("int", fend.Int(u.Int, rule.RequiredInt(), rule.MinInt(1), rule.MaxInt(5))),
+				fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8(), rule.MinInt8(1), rule.MaxInt8(5))),
+				fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32(), rule.MinInt32(1), rule.MaxInt32(5))),
+				fender.Field("int64", fend.Int64(u.Int64, rule.RequiredInt64(), rule.MinInt64(1), rule.MaxInt64(5))),
+				fender.Field("uint", fend.UInt(u.UInt, rule.RequiredUInt(), rule.MinUInt(1), rule.MaxUInt(5))),
+				fender.Field("uint8", fend.UInt8(u.UInt8, rule.RequiredUInt8(), rule.MinUInt8(1), rule.MaxUInt8(5))),
+				fender.Field("uint32", fend.UInt32(u.UInt32, rule.RequiredUInt32(), rule.MinUInt32(1), rule.MaxUInt32(5))),
+				fender.Field("uint64", fend.UInt64(u.UInt64, rule.RequiredUInt64(), rule.MinUInt64(1), rule.MaxUInt64(5))),
+				fender.Field("float32", fend.Float32(u.Float32, rule.RequiredFloat32(), rule.MinFloat32(1), rule.MaxFloat32(5))),
+				fender.Field("float64", fend.Float64(u.Float64, rule.RequiredFloat64(), rule.MinFloat64(1), rule.MaxFloat64(5))),
+				fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
+				fender.Field("string", fend.String(u.String, rule.RequiredString())),
+			}
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				if err := fender.All(fields...); err != nil {
+					// b.Log("Fender: " + err.Error())
+				}
+			}
+		})
+
+		b.Run("playground", func(b *testing.B) {
+			v := validator.New()
+			u := &Test{
+				Int:     1,
+				Int8:    1,
+				Int32:   1,
+				Int64:   1,
+				UInt:    1,
+				UInt8:   1,
+				UInt32:  1,
+				UInt64:  1,
+				Float32: 1,
+				Float64: 1,
+				Bool:    true,
+				String:  "true",
+			}
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				if err := v.Struct(u); err != nil {
+					// b.Log("Playground: " + err.Error())
 				}
 			}
 		})
