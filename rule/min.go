@@ -12,7 +12,7 @@ var ErrMin = errors.New(NameMin.String())
 
 // NewMinError constructor
 func NewMinError(verb rune, v interface{}) *Error {
-	return NewError(ErrMin, fmt.Sprintf("%"+string(verb), v))
+	return NewError(ErrMin, NameMin.String(), fmt.Sprintf("%"+string(verb), v))
 }
 
 func MinInt(expected int) IntRule {

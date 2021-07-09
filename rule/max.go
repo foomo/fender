@@ -12,7 +12,7 @@ var ErrMax = errors.New(NameMax.String())
 
 // NewMaxError constructor
 func NewMaxError(verb rune, v interface{}) *Error {
-	return NewError(ErrMax, fmt.Sprintf("%"+string(verb), v))
+	return NewError(ErrMax, NameMax.String(), fmt.Sprintf("%"+string(verb), v))
 }
 
 func MaxInt(expected int) IntRule {

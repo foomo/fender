@@ -11,7 +11,7 @@ var ErrRegex = errors.New(NameRegex.String())
 
 // NewRegexError constructor
 func NewRegexError() *Error {
-	return NewError(ErrRegex)
+	return NewError(ErrRegex, NameRegex.String())
 }
 
 // Regex validation using go standard package

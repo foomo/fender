@@ -19,22 +19,24 @@ func TestFirst(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	t.Run("error", func(t *testing.T) {
-		err := fender.First(fender.Field("foo", fend.String("", rule.RequiredString())))
-		assert.Error(t, err)
-		assert.True(t, errors.Is(err, fender.Err))
-		assert.True(t, errors.Is(errors.Unwrap(err), rule.Err))
-		assert.True(t, errors.Is(errors.Cause(err), rule.ErrRequired))
-		assert.EqualError(t, err, "foo:required")
-	})
-
-	t.Run("error meta", func(t *testing.T) {
+	t.Run("error string", func(t *testing.T) {
 		err := fender.First(fender.Field("foo", fend.String("", rule.MinString(10))))
 		assert.Error(t, err)
 		assert.True(t, errors.Is(err, fender.Err))
-		assert.True(t, errors.Is(errors.Unwrap(err), rule.Err))
-		assert.True(t, errors.Is(errors.Cause(err), rule.ErrMin))
-		assert.EqualError(t, err, "foo:min|10")
+		first := err.(*fender.Error).First()
+		assert.True(t, errors.Is(first, rule.Err))
+		assert.True(t, errors.Is(errors.Cause(first), rule.ErrMin))
+		assert.EqualError(t, err, "foo:min=10")
+	})
+
+	t.Run("error var", func(t *testing.T) {
+		err := fender.First(fender.Field("foo", fend.Var("", "min=10")))
+		assert.Error(t, err)
+		assert.True(t, errors.Is(err, fender.Err))
+		first := err.(*fender.Error).First()
+		assert.True(t, errors.Is(first, rule.Err))
+		assert.True(t, errors.Is(errors.Cause(first), rule.ErrVar))
+		assert.EqualError(t, err, "foo:min=10")
 	})
 }
 

@@ -31,3 +31,12 @@ func (e *Error) Error() string {
 func (e *Error) Errors() Errors {
 	return e.fields
 }
+
+func (e *Error) First() error {
+	for _, errs := range e.fields {
+		if len(errs) > 0 {
+			return errs[0]
+		}
+	}
+	return nil
+}

@@ -24,7 +24,7 @@ var (
 
 // NewEmailError constructor
 func NewEmailError() *Error {
-	return NewError(ErrEmail)
+	return NewError(ErrEmail, NameEmail.String())
 }
 
 // Email validation using go standard package

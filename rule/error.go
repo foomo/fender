@@ -9,16 +9,18 @@ import (
 
 type Error struct {
 	cause error
-	Meta  string
+	rule  string
+	meta  string
 }
 
 var Err = errors.New("rule violation")
 
 // NewError constructor
-func NewError(cause error, meta ...string) *Error {
+func NewError(cause error, rule string, meta ...string) *Error {
 	return &Error{
 		cause: cause,
-		Meta:  strings.Join(meta, config.MetaDelimiter),
+		rule:  rule,
+		meta:  strings.Join(meta, config.MetaDelimiter),
 	}
 }
 
@@ -38,9 +40,9 @@ func (e *Error) Cause() error {
 
 // Error interface
 func (e *Error) Error() string {
-	s := e.cause.Error()
-	if e.Meta != "" {
-		s += config.MetaDelimiter + e.Meta
+	s := e.rule
+	if e.meta != "" {
+		s += config.MetaDelimiter + e.meta
 	}
 	return s
 }

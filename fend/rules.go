@@ -132,3 +132,11 @@ func Validator(v rule.Validator, rules ...rule.ValidatorRule) Fend {
 		return ret
 	}
 }
+
+func Var(v interface{}, tag string) Fend {
+	return func() []rule.Rule {
+		return []rule.Rule{
+			rule.Var(tag)(v),
+		}
+	}
+}

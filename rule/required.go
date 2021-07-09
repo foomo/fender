@@ -10,7 +10,7 @@ var ErrRequired = errors.New(NameRequired.String())
 
 // NewRequiredError constructor
 func NewRequiredError() *Error {
-	return NewError(ErrRequired)
+	return NewError(ErrRequired, NameRequired.String())
 }
 
 func RequiredInt() IntRule {

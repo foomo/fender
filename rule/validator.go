@@ -12,7 +12,7 @@ var ErrValid = errors.New(NameValid.String())
 
 // NewValidError constructor
 func NewValidError() *Error {
-	return NewError(ErrValid)
+	return NewError(ErrValid, NameValid.String())
 }
 
 func Valid() ValidatorRule {

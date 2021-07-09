@@ -11,7 +11,7 @@ var ErrBool = errors.New(NameBool.String())
 
 // NewBoolRuleError constructor
 func NewBoolRuleError(v bool) *Error {
-	return NewError(ErrBool, fmt.Sprintf("%t", v))
+	return NewError(ErrBool, NameBool.String(), fmt.Sprintf("%t", v))
 }
 
 func Bool(expected bool) BoolRule {

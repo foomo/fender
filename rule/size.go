@@ -12,7 +12,7 @@ var ErrSize = errors.New(NameSize.String())
 
 // NewSizeError constructor
 func NewSizeError(verb rune, v interface{}) *Error {
-	return NewError(ErrSize, fmt.Sprintf("%"+string(verb), v))
+	return NewError(ErrSize, NameSize.String(), fmt.Sprintf("%"+string(verb), v))
 }
 
 func SizeInt(expected int) IntRule {
