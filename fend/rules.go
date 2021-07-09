@@ -147,3 +147,9 @@ func Var(v interface{}, tag string) Fend {
 		}
 	}
 }
+
+func Custom(v rule.Rule) Fend {
+	return func() []rule.Rule {
+		return []rule.Rule{v}
+	}
+}
