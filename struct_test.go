@@ -1,11 +1,13 @@
 package fender_test
 
 import (
+	"fmt"
 	"testing"
 
-	"github.com/foomo/fender"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/foomo/fender"
 )
 
 func TestStruct(t *testing.T) {
@@ -25,6 +27,7 @@ func TestStruct(t *testing.T) {
 
 	t.Run("errors", func(t *testing.T) {
 		err := fender.Struct(test{})
+		fmt.Println(err)
 		assert.Error(t, err)
 		assert.True(t, errors.Is(err, fender.Err))
 		errs := err.(*fender.Error).Errors()

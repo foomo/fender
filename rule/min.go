@@ -107,7 +107,7 @@ func MinFloat32(expected float32) Float32Rule {
 	return func(v float32) Rule {
 		return func() *Error {
 			if v < expected {
-				return NewMinError('f', expected)
+				return NewMinError('g', expected)
 			}
 			return nil
 		}
@@ -118,7 +118,7 @@ func MinFloat64(expected float64) Float64Rule {
 	return func(v float64) Rule {
 		return func() *Error {
 			if v < expected {
-				return NewMinError('f', expected)
+				return NewMinError('g', expected)
 			}
 			return nil
 		}
