@@ -105,7 +105,7 @@ func RequiredFloat64(v float64) Rule {
 
 func RequiredString(v string) Rule {
 	return func() *Error {
-		if v == "" {
+		if len(v) == 0 {
 			return NewRequiredError()
 		}
 		return nil

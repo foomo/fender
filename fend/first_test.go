@@ -11,7 +11,7 @@ import (
 func TestFirstError(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		err := First(String("foo", rule.RequiredString))
-		assert.NoError(t, err)
+		assert.Nil(t, err)
 	})
 
 	t.Run("error", func(t *testing.T) {
@@ -27,7 +27,7 @@ func TestFirstError(t *testing.T) {
 		assert.Error(t, err)
 		assert.True(t, errors.Is(err, rule.Err))
 		assert.True(t, errors.Is(errors.Cause(err), rule.ErrMin))
-		assert.EqualError(t, err, "min|10")
+		assert.EqualError(t, err, "min=10")
 	})
 
 	t.Run("third error", func(t *testing.T) {
@@ -38,6 +38,6 @@ func TestFirstError(t *testing.T) {
 		assert.Error(t, err)
 		assert.True(t, errors.Is(err, rule.Err))
 		assert.True(t, errors.Is(errors.Cause(err), rule.ErrMin))
-		assert.EqualError(t, err, "min|10")
+		assert.EqualError(t, err, "min=10")
 	})
 }
