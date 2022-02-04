@@ -1,16 +1,16 @@
 package rule
 
 import (
-	"errors"
 	"strings"
 
 	"github.com/foomo/fender/config"
+	"github.com/pkg/errors"
 )
 
 type Error struct {
-	cause error
-	rule  string
-	meta  string
+	Rule     string
+	Meta     string
+	CauseTxt string
 }
 
 var Err = errors.New("rule violation")
@@ -27,32 +27,32 @@ func IsError(err error) bool {
 // NewError constructor
 func NewError(cause error, rule string, meta ...string) *Error {
 	return &Error{
-		cause: cause,
-		rule:  rule,
-		meta:  strings.Join(meta, config.MetaDelimiter),
+		Rule:     rule,
+		Meta:     strings.Join(meta, config.MetaDelimiter),
+		CauseTxt: cause.Error(),
 	}
 }
 
 // Is interface
 func (e *Error) Is(err error) bool {
-	return errors.Is(err, Err)
+	return e != nil && err != nil && err.Error() == e.Error()
 }
 
 // Unwrap interface
 func (e *Error) Unwrap() error {
-	return e.cause
+	return errors.New(e.CauseTxt)
 }
 
 // Cause interface
 func (e *Error) Cause() error {
-	return e.cause
+	return errors.New(e.CauseTxt)
 }
 
 // Error interface
 func (e *Error) Error() string {
-	s := e.rule
-	if e.meta != "" {
-		s += config.MetaDelimiter + e.meta
+	s := e.Rule
+	if e.Meta != "" {
+		s += config.MetaDelimiter + e.Meta
 	}
 	return s
 }

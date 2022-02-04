@@ -6,7 +6,7 @@ import (
 
 // Error type
 type Error struct {
-	fields FieldErrors
+	Fields FieldErrors
 }
 
 var Err = errors.New("validation error")
@@ -23,27 +23,31 @@ func IsError(err error) bool {
 // NewError constructor
 func NewError(fields FieldErrors) *Error {
 	return &Error{
-		fields: fields,
+		Fields: fields,
 	}
 }
 
 // Is interface
 func (e *Error) Is(err error) bool {
-	return errors.Is(err, Err)
+	return e != nil && err != nil && err.Error() == e.Error()
 }
 
 // Error interface
 func (e *Error) Error() string {
-	return e.fields.String()
+	return e.Fields.String()
 }
 
 func (e *Error) Errors() FieldErrors {
-	return e.fields
+	return e.Fields
 }
 
 func (e *Error) First() error {
-	for _, err := range e.fields {
+	for _, err := range e.Fields {
 		return err
 	}
 	return nil
+}
+
+func (e *Error) Wrap(err error) error {
+	return NewWrappedError(err, e)
 }
