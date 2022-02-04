@@ -16,11 +16,12 @@ type Error struct {
 var Err = errors.New("rule violation")
 
 func IsError(err error) bool {
-	if err == nil {
+	if v, ok := err.(*Error); ok && v == nil {
+		return false
+	} else if err == nil {
 		return false
 	}
-	_, ok := err.(*Error)
-	return ok
+	return true
 }
 
 // NewError constructor
