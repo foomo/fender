@@ -30,7 +30,6 @@ linters:
     - dogsled
     - exhaustive
     - exportloopref
-    - gci
     - goconst
     - gofmt
     - gofumpt
