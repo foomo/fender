@@ -3,9 +3,10 @@ package fender_test
 import (
 	"testing"
 
-	"github.com/foomo/fender"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/foomo/fender"
 )
 
 func TestStruct(t *testing.T) {
@@ -29,7 +30,7 @@ func TestStruct(t *testing.T) {
 			assert.True(t, errors.Is(fendErr, fender.Err))
 			errs := fendErr.Errors()
 			assert.Len(t, errs, 2)
-			assert.EqualError(t, fendErr, "string:required;int:min=10")
+			assert.Len(t, fendErr.Error(), len("string:required;int:min=10"))
 		}
 	})
 }
