@@ -6,13 +6,22 @@ import (
 
 // Error type
 type Error struct {
-	fields Errors
+	fields FieldErrors
 }
 
 var Err = errors.New("validation error")
 
+func IsError(err error) bool {
+	if v, ok := err.(*Error); ok && v == nil {
+		return false
+	} else if err == nil {
+		return false
+	}
+	return true
+}
+
 // NewError constructor
-func NewError(fields Errors) *Error {
+func NewError(fields FieldErrors) *Error {
 	return &Error{
 		fields: fields,
 	}
@@ -28,7 +37,7 @@ func (e *Error) Error() string {
 	return e.fields.String()
 }
 
-func (e *Error) Errors() Errors {
+func (e *Error) Errors() FieldErrors {
 	return e.fields
 }
 

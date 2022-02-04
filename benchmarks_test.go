@@ -33,7 +33,7 @@ func BenchmarkSimpleStruct(b *testing.B) {
 
 		b.Run("fender", func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = fender.All(
+				_, _ = fender.All(
 					fender.Field("int", fend.Int(u.Int, rule.RequiredInt, rule.MinInt(1), rule.MaxInt(5))),
 					fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8, rule.MinInt8(1), rule.MaxInt8(5))),
 					fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32, rule.MinInt32(1), rule.MaxInt32(5))),
@@ -51,7 +51,7 @@ func BenchmarkSimpleStruct(b *testing.B) {
 		})
 		b.Run("playground", func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = fender.Struct(u)
+				_, _ = fender.Struct(u)
 			}
 		})
 		b.Run("playground", func(b *testing.B) {
@@ -78,7 +78,7 @@ func BenchmarkSimpleStruct(b *testing.B) {
 		}
 		b.Run("fender", func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = fender.All(
+				_, _ = fender.All(
 					fender.Field("int", fend.Int(u.Int, rule.RequiredInt, rule.MinInt(1), rule.MaxInt(5))),
 					fender.Field("int8", fend.Int8(u.Int8, rule.RequiredInt8, rule.MinInt8(1), rule.MaxInt8(5))),
 					fender.Field("int32", fend.Int32(u.Int32, rule.RequiredInt32, rule.MinInt32(1), rule.MaxInt32(5))),

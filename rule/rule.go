@@ -7,7 +7,7 @@ func (r Name) String() string {
 }
 
 type (
-	Rule          func() *Error
+	Rule          func() (*Error, error)
 	IntRule       func(v int) Rule
 	Int8Rule      func(v int8) Rule
 	Int32Rule     func(v int32) Rule

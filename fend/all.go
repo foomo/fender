@@ -1,15 +1,19 @@
 package fend
 
-import "github.com/foomo/fender/rule"
+import (
+	"github.com/foomo/fender/rule"
+)
 
-func All(values ...Fend) []*rule.Error {
+func All(values ...Fend) ([]*rule.Error, error) {
 	var errs []*rule.Error
 	for _, value := range values {
 		for _, v := range value() {
-			if err := v(); err != nil {
-				errs = append(errs, err)
+			if ruleErr, err := v(); err != nil {
+				return nil, err
+			} else if ruleErr != nil {
+				errs = append(errs, ruleErr)
 			}
 		}
 	}
-	return errs
+	return errs, nil
 }

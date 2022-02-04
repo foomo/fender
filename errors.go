@@ -7,11 +7,11 @@ import (
 	"github.com/foomo/fender/rule"
 )
 
-// Errors type
-type Errors map[string]*rule.Error
+// FieldErrors type
+type FieldErrors map[string]*rule.Error
 
 // String returns the string representation
-func (m Errors) String() string {
+func (m FieldErrors) String() string {
 	var i int
 	buff := bytes.NewBufferString("")
 	for name, err := range m {

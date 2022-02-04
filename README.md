@@ -11,6 +11,14 @@ Fender provides different ways to validate your data.
 ### struct validation using go-playground validator
 
 ```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/foomo/fender"
+)
+
 type Test struct {
 	Int     int     `validate:"min=1"`
 	Int8    int8    `validate:"min=1"`
@@ -25,14 +33,30 @@ type Test struct {
 	Bool    bool    `validate:"required"`
 	String  string  `validate:"required"`
 }
-u := Test{}
-err := fender.Struct(u)
-fmt.Println(err) // bool:required;string:required;uInt:min=1;uInt8:min=1;uInt32:min=1;uInt64:min=1;float32:min=1.5;int:min=1;int8:min=1;int32:min=1;int64:min=1;float64:min=1.5
+
+func main() {
+	u := Test{}
+	fendErr, err := fender.Struct(u)
+	if err != nil {
+		panic("internal error: " + err.Error())
+	}
+	fmt.Println(fendErr) // bool:required;string:required;uInt:min=1;uInt8:min=1;uInt32:min=1;uInt64:min=1;float32:min=1.5;int:min=1;int8:min=1;int32:min=1;int64:min=1;float64:min=1.5
+}
 ```
 
 ### validate by code
 
 ```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/foomo/fender"
+	"github.com/foomo/fender/fend"
+	"github.com/foomo/fender/rule"
+)
+
 type Test struct {
 	Int     int
 	Int8    int8
@@ -48,26 +72,42 @@ type Test struct {
 	String  string
 }
 
-err := fender.All(
-	fender.Field("int", fend.Int(u.Int, rule.MinInt(1))),
-	fender.Field("int8", fend.Int8(u.Int8, rule.MinInt8(1))),
-	fender.Field("int32", fend.Int32(u.Int32, rule.MinInt32(1))),
-	fender.Field("int64", fend.Int64(u.Int64, rule.MinInt64(1))),
-	fender.Field("uint", fend.UInt(u.UInt, rule.MinUInt(1))),
-	fender.Field("uint8", fend.UInt8(u.UInt8, rule.MinUInt8(1))),
-	fender.Field("uint32", fend.UInt32(u.UInt32, rule.MinUInt32(1))),
-	fender.Field("uint64", fend.UInt64(u.UInt64, rule.MinUInt64(1))),
-	fender.Field("float32", fend.Float32(u.Float32, rule.MinFloat32(1.5))),
-	fender.Field("float64", fend.Float64(u.Float64, rule.MinFloat64(1.5))),
-	fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
-	fender.Field("string", fend.String(u.String, rule.RequiredString)),
-)
-fmt.Println(err) // uint:min=1;uint64:min=1;float32:min=1.5;int:min=1;int8:min=1;uint8:min=1;uint32:min=1;float64:min=1.5;bool:bool=true;string:required;int32:min=1;int64:min=1
+func main() {
+	u := Test{}
+	fendErr, err := fender.All(
+		fender.Field("int", fend.Int(u.Int, rule.MinInt(1))),
+		fender.Field("int8", fend.Int8(u.Int8, rule.MinInt8(1))),
+		fender.Field("int32", fend.Int32(u.Int32, rule.MinInt32(1))),
+		fender.Field("int64", fend.Int64(u.Int64, rule.MinInt64(1))),
+		fender.Field("uint", fend.UInt(u.UInt, rule.MinUInt(1))),
+		fender.Field("uint8", fend.UInt8(u.UInt8, rule.MinUInt8(1))),
+		fender.Field("uint32", fend.UInt32(u.UInt32, rule.MinUInt32(1))),
+		fender.Field("uint64", fend.UInt64(u.UInt64, rule.MinUInt64(1))),
+		fender.Field("float32", fend.Float32(u.Float32, rule.MinFloat32(1.5))),
+		fender.Field("float64", fend.Float64(u.Float64, rule.MinFloat64(1.5))),
+		fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
+		fender.Field("string", fend.String(u.String, rule.RequiredString)),
+	)
+	if err != nil {
+		panic("internal error: " + err.Error())
+	}
+	fmt.Println(fendErr) // uint:min=1;uint64:min=1;float32:min=1.5;int:min=1;int8:min=1;uint8:min=1;uint32:min=1;float64:min=1.5;bool:bool=true;string:required;int32:min=1;int64:min=1
+}
 ```
 
 ### validate by code and stop on first error
 
 ```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/foomo/fender"
+	"github.com/foomo/fender/fend"
+	"github.com/foomo/fender/rule"
+)
+
 type Test struct {
 	Int     int
 	Int8    int8
@@ -83,21 +123,27 @@ type Test struct {
 	String  string
 }
 
-err := fender.First(
-	fender.Field("int", fend.Int(u.Int, rule.MinInt(1))),
-	fender.Field("int8", fend.Int8(u.Int8, rule.MinInt8(1))),
-	fender.Field("int32", fend.Int32(u.Int32, rule.MinInt32(1))),
-	fender.Field("int64", fend.Int64(u.Int64, rule.MinInt64(1))),
-	fender.Field("uint", fend.UInt(u.UInt, rule.MinUInt(1))),
-	fender.Field("uint8", fend.UInt8(u.UInt8, rule.MinUInt8(1))),
-	fender.Field("uint32", fend.UInt32(u.UInt32, rule.MinUInt32(1))),
-	fender.Field("uint64", fend.UInt64(u.UInt64, rule.MinUInt64(1))),
-	fender.Field("float32", fend.Float32(u.Float32, rule.MinFloat32(1.5))),
-	fender.Field("float64", fend.Float64(u.Float64, rule.MinFloat64(1.5))),
-	fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
-	fender.Field("string", fend.String(u.String, rule.RequiredString)),
-)
-fmt.Println(err) // int:min=1
+func main() {
+	u := Test{}
+	fendErr, err := fender.First(
+		fender.Field("int", fend.Int(u.Int, rule.MinInt(1))),
+		fender.Field("int8", fend.Int8(u.Int8, rule.MinInt8(1))),
+		fender.Field("int32", fend.Int32(u.Int32, rule.MinInt32(1))),
+		fender.Field("int64", fend.Int64(u.Int64, rule.MinInt64(1))),
+		fender.Field("uint", fend.UInt(u.UInt, rule.MinUInt(1))),
+		fender.Field("uint8", fend.UInt8(u.UInt8, rule.MinUInt8(1))),
+		fender.Field("uint32", fend.UInt32(u.UInt32, rule.MinUInt32(1))),
+		fender.Field("uint64", fend.UInt64(u.UInt64, rule.MinUInt64(1))),
+		fender.Field("float32", fend.Float32(u.Float32, rule.MinFloat32(1.5))),
+		fender.Field("float64", fend.Float64(u.Float64, rule.MinFloat64(1.5))),
+		fender.Field("bool", fend.Bool(u.Bool, rule.Bool(true))),
+		fender.Field("string", fend.String(u.String, rule.RequiredString)),
+	)
+	if err != nil {
+		panic("internal error: " + err.Error())
+	}
+	fmt.Println(fendErr) // int:min=1
+}
 ```
 
 ## References & alternatives

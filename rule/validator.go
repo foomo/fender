@@ -17,11 +17,11 @@ func NewValidError() *Error {
 
 func Valid() ValidatorRule {
 	return func(v Validator) Rule {
-		return func() *Error {
+		return func() (*Error, error) {
 			if !v.Valid() {
-				return NewValidError()
+				return NewValidError(), nil
 			}
-			return nil
+			return nil, nil
 		}
 	}
 }

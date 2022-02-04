@@ -15,6 +15,14 @@ type Error struct {
 
 var Err = errors.New("rule violation")
 
+func IsError(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*Error)
+	return ok
+}
+
 // NewError constructor
 func NewError(cause error, rule string, meta ...string) *Error {
 	return &Error{
@@ -24,6 +32,7 @@ func NewError(cause error, rule string, meta ...string) *Error {
 	}
 }
 
+// Is interface
 func (e *Error) Is(err error) bool {
 	return errors.Is(err, Err)
 }

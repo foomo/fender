@@ -17,11 +17,11 @@ func NewRegexError() *Error {
 // Regex validation using go standard package
 func Regex(regexp *regexp.Regexp) StringRule {
 	return func(v string) Rule {
-		return func() *Error {
+		return func() (*Error, error) {
 			if !regexp.MatchString(v) {
-				return NewRegexError()
+				return NewRegexError(), nil
 			}
-			return nil
+			return nil, nil
 		}
 	}
 }

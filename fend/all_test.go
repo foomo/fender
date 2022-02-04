@@ -9,12 +9,18 @@ import (
 
 func TestAll(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
-		errs := All(String("foo", rule.RequiredString, rule.MinString(2)))
-		assert.Empty(t, errs)
+		if ruleErrs, err := All(
+			String("foo", rule.RequiredString, rule.MinString(2)),
+		); assert.NoError(t, err) {
+			assert.Empty(t, ruleErrs)
+		}
 	})
 
 	t.Run("errors", func(t *testing.T) {
-		errs := All(String("", rule.RequiredString, rule.MinString(2)))
-		assert.Len(t, errs, 2)
+		if ruleErrs, err := All(
+			String("", rule.RequiredString, rule.MinString(2)),
+		); assert.NoError(t, err) {
+			assert.Len(t, ruleErrs, 2)
+		}
 	})
 }

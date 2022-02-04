@@ -1,13 +1,11 @@
 package fender_test
 
 import (
-	"fmt"
 	"testing"
 
+	"github.com/foomo/fender"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/foomo/fender"
 )
 
 func TestStruct(t *testing.T) {
@@ -21,17 +19,17 @@ func TestStruct(t *testing.T) {
 			String: "foo",
 			Int:    13,
 		}
-		err := fender.Struct(inst)
-		assert.NoError(t, err)
+		if fendErr, err := fender.Struct(inst); assert.NoError(t, err) {
+			assert.Nil(t, fendErr)
+		}
 	})
 
 	t.Run("errors", func(t *testing.T) {
-		err := fender.Struct(test{})
-		fmt.Println(err)
-		assert.Error(t, err)
-		assert.True(t, errors.Is(err, fender.Err))
-		errs := err.(*fender.Error).Errors()
-		assert.Len(t, errs, 2)
-		assert.EqualError(t, err, "string:required;int:min=10")
+		if fendErr, err := fender.Struct(test{}); assert.NoError(t, err) {
+			assert.True(t, errors.Is(fendErr, fender.Err))
+			errs := fendErr.Errors()
+			assert.Len(t, errs, 2)
+			assert.EqualError(t, fendErr, "string:required;int:min=10")
+		}
 	})
 }

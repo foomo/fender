@@ -41,8 +41,8 @@ func TestEmail(t *testing.T) {
 	}
 	for email, valid := range testEmails {
 		t.Run(email, func(t *testing.T) {
-			if err := Email(email)(); (err == nil) != valid {
-				t.Errorf("Email() error = %v, wantErr %v", err, !valid)
+			if ruleErr, _ := Email(email)(); (ruleErr == nil) != valid {
+				t.Errorf("Email() error = %v, wantErr %v", ruleErr, !valid)
 			}
 		})
 	}
@@ -85,8 +85,8 @@ func TestEmailWeak(t *testing.T) {
 	}
 	for email, valid := range testEmails {
 		t.Run(email, func(t *testing.T) {
-			if err := EmailWeak(email)(); (err == nil) != valid {
-				t.Errorf("Email() error = %v, wantErr %v", err, !valid)
+			if ruleErr, _ := EmailWeak(email)(); (ruleErr == nil) != valid {
+				t.Errorf("Email() error = %v, wantErr %v", ruleErr, !valid)
 			}
 		})
 	}
@@ -118,8 +118,8 @@ func Test_emailHostLookup(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := EmailLookup(tt.args.v)(); (err != nil) != tt.wantErr {
-				t.Errorf("emailHostLookup() error = %v, wantErr %v", err, tt.wantErr)
+			if ruleErr, _ := EmailLookup(tt.args.v)(); (ruleErr != nil) != tt.wantErr {
+				t.Errorf("emailHostLookup() error = %v, wantErr %v", ruleErr, tt.wantErr)
 			}
 		})
 	}

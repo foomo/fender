@@ -18,13 +18,13 @@ func NewVarError(tag, meta string) *Error {
 
 func Var(tag string) InterfaceRule {
 	return func(v interface{}) Rule {
-		return func() *Error {
+		return func() (*Error, error) {
 			if err := config.Validator.Var(v, tag); err != nil {
 				for _, err := range err.(validator.ValidationErrors) {
-					return NewVarError(err.Tag(), err.Param())
+					return NewVarError(err.Tag(), err.Param()), nil
 				}
 			}
-			return nil
+			return nil, nil
 		}
 	}
 }

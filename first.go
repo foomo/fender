@@ -4,11 +4,13 @@ import (
 	"github.com/foomo/fender/fend"
 )
 
-func First(fields ...FendField) error {
+func First(fields ...FendField) (*Error, error) {
 	for _, field := range fields {
-		if err := fend.First(field.fends...); err != nil {
-			return NewError(Errors{field.name: err})
+		if ruleErr, err := fend.First(field.fends...); err != nil {
+			return nil, err
+		} else if ruleErr != nil {
+			return NewError(FieldErrors{field.name: ruleErr}), nil
 		}
 	}
-	return nil
+	return nil, nil
 }

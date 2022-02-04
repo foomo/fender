@@ -15,7 +15,7 @@ func BenchmarkString(b *testing.B) {
 
 	b.Run("all", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			fend.All(
+			_, _ = fend.All(
 				fend.Var(test, "required,min=10"),
 				// fend.Var(test, "required,min=10"),
 				// fend.Var(test, "required,min=10"),
@@ -31,7 +31,7 @@ func BenchmarkString(b *testing.B) {
 	})
 	b.Run("first", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			if err := fend.First(
+			if err, _ := fend.First(
 				fend.Var(test, "required,min=10"),
 				// fend.Var(test, "required,min=10"),
 				// fend.Var(test, "required,min=10"),
@@ -49,7 +49,7 @@ func BenchmarkString(b *testing.B) {
 	})
 	b.Run("fender all", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = fend.All(
+			_, _ = fend.All(
 				fend.String(test, rule.MinString(10), rule.RequiredString),
 				// fend.String(test, rule.MinString(10), rule.RequiredString),
 				// fend.String(test, rule.MinString(10), rule.RequiredString),
@@ -65,7 +65,7 @@ func BenchmarkString(b *testing.B) {
 	})
 	b.Run("fender first", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = fend.First(
+			_, _ = fend.First(
 				fend.String(test, rule.MinString(10), rule.RequiredString),
 				// fend.String(test, rule.MinString(10), rule.RequiredString),
 				// fend.String(test, rule.MinString(10), rule.RequiredString),

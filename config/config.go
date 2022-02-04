@@ -20,7 +20,7 @@ var (
 )
 
 // EmailRegexWeak as https://davidcel.is/posts/stop-validating-email-addresses-with-regex/
-var EmailRegexWeak = ".+@.+\\..+"
+var EmailRegexWeak = `.+@.+\..+`
 
 var Validator = validator.New()
 
