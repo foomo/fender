@@ -3,10 +3,9 @@ package fender_test
 import (
 	"testing"
 
+	"github.com/foomo/fender"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/foomo/fender"
 )
 
 func TestStruct(t *testing.T) {
