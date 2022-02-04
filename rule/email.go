@@ -1,7 +1,6 @@
 package rule
 
 import (
-	"errors"
 	"net"
 	"net/mail"
 	"regexp"
@@ -10,17 +9,15 @@ import (
 	"github.com/foomo/fender/config"
 )
 
-const (
-	NameEmail Name = "email"
-)
+const NameEmail = "email"
 
-var ErrEmail = errors.New(NameEmail.String())
+var ErrEmail = &Error{Rule: NameEmail}
 
 var emailRegexWeak = regexp.MustCompile(config.EmailRegexWeak)
 
 // NewEmailError constructor
 func NewEmailError() *Error {
-	return NewError(ErrEmail, NameEmail.String())
+	return NewError(NameEmail)
 }
 
 // Email validation using go standard package

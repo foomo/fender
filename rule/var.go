@@ -1,19 +1,18 @@
 package rule
 
 import (
-	"errors"
+	"github.com/go-playground/validator/v10"
 
 	"github.com/foomo/fender/config"
-	"github.com/go-playground/validator/v10"
 )
 
-const NameVar Name = "var"
+const NameVar = "var"
 
-var ErrVar = errors.New(NameVar.String())
+var ErrVar = &Error{Rule: NameVar}
 
 // NewVarError constructor
 func NewVarError(tag, meta string) *Error {
-	return NewError(ErrVar, tag, meta)
+	return NewError(NameVar, tag, meta)
 }
 
 func Var(tag string) InterfaceRule {

@@ -1,16 +1,12 @@
 package rule
 
-import (
-	"errors"
-)
+const NameRequired = "required"
 
-const NameRequired Name = "required"
-
-var ErrRequired = errors.New(NameRequired.String())
+var ErrRequired = &Error{Rule: NameRequired}
 
 // NewRequiredError constructor
 func NewRequiredError() *Error {
-	return NewError(ErrRequired, NameRequired.String())
+	return NewError(NameRequired)
 }
 
 func RequiredInt(v int) Rule {

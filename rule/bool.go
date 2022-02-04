@@ -1,17 +1,16 @@
 package rule
 
 import (
-	"errors"
 	"fmt"
 )
 
-const NameBool Name = "bool"
+const NameBool = "bool"
 
-var ErrBool = errors.New(NameBool.String())
+var ErrBool = &Error{Rule: NameBool}
 
 // NewBoolRuleError constructor
 func NewBoolRuleError(v bool) *Error {
-	return NewError(ErrBool, NameBool.String(), fmt.Sprintf("%t", v))
+	return NewError(NameBool, fmt.Sprintf("%t", v))
 }
 
 func Bool(expected bool) BoolRule {

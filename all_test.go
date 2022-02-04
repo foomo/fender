@@ -3,11 +3,12 @@ package fender_test
 import (
 	"testing"
 
+	"github.com/pkg/errors"
+	"github.com/stretchr/testify/assert"
+
 	"github.com/foomo/fender"
 	"github.com/foomo/fender/fend"
 	"github.com/foomo/fender/rule"
-	"github.com/pkg/errors"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestAll(t *testing.T) {
@@ -25,7 +26,7 @@ func TestAll(t *testing.T) {
 			fender.Field("foo", fend.String("", rule.RequiredString, rule.MinString(10))),
 			fender.Field("bar", fend.String("bar", rule.RequiredString, rule.MinString(10))),
 		); assert.NoError(t, err) && assert.NotNil(t, fendErr) {
-			// assert.True(t, errors.Is(fendErr, fender.Err)) FIXME
+			assert.True(t, errors.Is(fendErr, fender.Err))
 			errs := fendErr.Errors()
 			assert.Len(t, errs, 2)
 			assert.Len(t, fendErr.Error(), len("foo:required;bar:min=10"))
@@ -37,7 +38,7 @@ func TestAll(t *testing.T) {
 			fender.Field("foo", fend.String("", rule.RequiredString, rule.MinString(10))),
 			fender.Field("foo", fend.String("", rule.MinString(10), rule.RequiredString)),
 		); assert.NoError(t, err) && assert.NotNil(t, fendErr) {
-			// assert.True(t, errors.Is(fendErr, fender.Err)) FIXME
+			assert.True(t, errors.Is(fendErr, fender.Err))
 			errs := fendErr.Errors()
 			assert.Len(t, errs, 1)
 			assert.EqualError(t, fendErr, "foo:required")

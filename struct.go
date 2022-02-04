@@ -1,9 +1,10 @@
 package fender
 
 import (
+	"github.com/go-playground/validator/v10"
+
 	"github.com/foomo/fender/config"
 	"github.com/foomo/fender/rule"
-	"github.com/go-playground/validator/v10"
 )
 
 func Struct(s interface{}) (*Error, error) {

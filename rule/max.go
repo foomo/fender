@@ -1,18 +1,17 @@
 package rule
 
 import (
-	"errors"
 	"fmt"
 	"unicode/utf8"
 )
 
-const NameMax Name = "max"
+const NameMax = "max"
 
-var ErrMax = errors.New(NameMax.String())
+var ErrMax = &Error{Rule: NameMax}
 
 // NewMaxError constructor
 func NewMaxError(verb rune, v interface{}) *Error {
-	return NewError(ErrMax, NameMax.String(), fmt.Sprintf("%"+string(verb), v))
+	return NewError(NameMax, fmt.Sprintf("%"+string(verb), v))
 }
 
 func MaxInt(expected int) IntRule {

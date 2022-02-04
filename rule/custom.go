@@ -1,14 +1,14 @@
 package rule
 
-import (
-	"errors"
-)
-
-const NameCustom Name = "custom"
-
-var ErrCustom = errors.New(NameCustom.String())
+const NameCustom = "custom"
 
 // NewCustomRuleError constructor
 func NewCustomRuleError(rule string, meta ...string) *Error {
-	return NewError(ErrCustom, rule, meta...)
+	var m []string
+	for _, v := range meta {
+		if v != "" {
+			m = append(m, v)
+		}
+	}
+	return NewError(rule, m...)
 }

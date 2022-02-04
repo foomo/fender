@@ -1,11 +1,5 @@
 package rule
 
-type Name string
-
-func (r Name) String() string {
-	return string(r)
-}
-
 type (
 	Rule          func() (*Error, error)
 	IntRule       func(v int) Rule

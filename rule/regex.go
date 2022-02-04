@@ -1,17 +1,16 @@
 package rule
 
 import (
-	"errors"
 	"regexp"
 )
 
-const NameRegex Name = "regex"
+const NameRegex = "regex"
 
-var ErrRegex = errors.New(NameRegex.String())
+var ErrRegex = &Error{Rule: NameRegex}
 
 // NewRegexError constructor
 func NewRegexError() *Error {
-	return NewError(ErrRegex, NameRegex.String())
+	return NewError(NameRegex)
 }
 
 // Regex validation using go standard package

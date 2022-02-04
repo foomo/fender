@@ -1,18 +1,17 @@
 package rule
 
 import (
-	"errors"
 	"fmt"
 	"unicode/utf8"
 )
 
-const NameMin Name = "min"
+const NameMin = "min"
 
-var ErrMin = errors.New(NameMin.String())
+var ErrMin = &Error{Rule: NameMin}
 
 // NewMinError constructor
 func NewMinError(verb rune, v interface{}) *Error {
-	return NewError(ErrMin, NameMin.String(), fmt.Sprintf("%"+string(verb), v))
+	return NewError(NameMin, fmt.Sprintf("%"+string(verb), v))
 }
 
 func MinInt(expected int) IntRule {

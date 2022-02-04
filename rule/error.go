@@ -4,54 +4,40 @@ import (
 	"strings"
 
 	"github.com/foomo/fender/config"
-	"github.com/pkg/errors"
 )
 
 type Error struct {
-	Rule     string
-	Meta     string
-	CauseTxt string
+	Rule string
+	Meta string
 }
 
-var Err = errors.New("rule violation")
-
-func IsError(err error) bool {
-	if v, ok := err.(*Error); ok && v == nil {
-		return false
-	} else if err == nil {
-		return false
-	}
-	return true
-}
+var Err = &Error{Rule: ""}
 
 // NewError constructor
-func NewError(cause error, rule string, meta ...string) *Error {
+func NewError(rule string, meta ...string) *Error {
 	return &Error{
-		Rule:     rule,
-		Meta:     strings.Join(meta, config.MetaDelimiter),
-		CauseTxt: cause.Error(),
+		Rule: rule,
+		Meta: strings.Join(meta, config.MetaDelimiter),
 	}
 }
 
 // Is interface
 func (e *Error) Is(err error) bool {
-	return e != nil && err != nil && err.Error() == e.Error()
-}
-
-// Unwrap interface
-func (e *Error) Unwrap() error {
-	return errors.New(e.CauseTxt)
-}
-
-// Cause interface
-func (e *Error) Cause() error {
-	return errors.New(e.CauseTxt)
+	if err == nil {
+		return false
+	}
+	if v, ok := err.(*Error); ok && (v.Rule == e.Rule || v.Rule == "") {
+		return true
+	}
+	return false
 }
 
 // Error interface
 func (e *Error) Error() string {
 	s := e.Rule
-	if e.Meta != "" {
+	if e.Meta != "" && strings.Contains(e.Meta, config.MetaDelimiter) {
+		s = e.Meta
+	} else if e.Meta != "" {
 		s += config.MetaDelimiter + e.Meta
 	}
 	return s

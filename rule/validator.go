@@ -1,18 +1,16 @@
 package rule
 
-import "errors"
-
-const NameValid Name = "valid"
+const NameValid = "valid"
 
 type Validator interface {
 	Valid() bool
 }
 
-var ErrValid = errors.New(NameValid.String())
+var ErrValid = &Error{Rule: NameValid}
 
 // NewValidError constructor
 func NewValidError() *Error {
-	return NewError(ErrValid, NameValid.String())
+	return NewError(NameValid)
 }
 
 func Valid() ValidatorRule {

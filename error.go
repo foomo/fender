@@ -1,24 +1,11 @@
 package fender
 
-import (
-	"errors"
-)
-
 // Error type
 type Error struct {
 	Fields FieldErrors
 }
 
-var Err = errors.New("validation error")
-
-func IsError(err error) bool {
-	if v, ok := err.(*Error); ok && v == nil {
-		return false
-	} else if err == nil {
-		return false
-	}
-	return true
-}
+var Err = &Error{}
 
 // NewError constructor
 func NewError(fields FieldErrors) *Error {
@@ -29,7 +16,11 @@ func NewError(fields FieldErrors) *Error {
 
 // Is interface
 func (e *Error) Is(err error) bool {
-	return e != nil && err != nil && err.Error() == e.Error()
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*Error)
+	return ok
 }
 
 // Error interface
@@ -46,8 +37,4 @@ func (e *Error) First() error {
 		return err
 	}
 	return nil
-}
-
-func (e *Error) Wrap(err error) error {
-	return NewWrappedError(err, e)
 }

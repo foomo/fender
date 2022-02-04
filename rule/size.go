@@ -1,18 +1,17 @@
 package rule
 
 import (
-	"errors"
 	"fmt"
 	"unicode/utf8"
 )
 
-const NameSize Name = "size"
+const NameSize = "size"
 
-var ErrSize = errors.New(NameSize.String())
+var ErrSize = &Error{Rule: NameSize}
 
 // NewSizeError constructor
 func NewSizeError(verb rune, v interface{}) *Error {
-	return NewError(ErrSize, NameSize.String(), fmt.Sprintf("%"+string(verb), v))
+	return NewError(NameSize, fmt.Sprintf("%"+string(verb), v))
 }
 
 func SizeInt(expected int) IntRule {

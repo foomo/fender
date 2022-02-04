@@ -32,10 +32,14 @@ func (e *wrappedError) Error() string {
 	return e.err.Error() + ": " + e.cause.Error()
 }
 
-func WrappedErrorCause(err error) *Error {
+func WrapError(err error, cause *Error) error {
+	return NewWrappedError(err, cause)
+}
+
+func UnwrapError(err error) *Error {
 	c := errors.Cause(err)
 	if v, ok := c.(*Error); ok {
 		return v
 	}
-	return NewError(nil)
+	return nil
 }
