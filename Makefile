@@ -7,6 +7,11 @@
 gomod:
 	go mod tidy
 
+.PHONY: outdated
+## Show outdated direct dependencies
+outdated:
+	go list -u -m -json all | go-mod-outdated -update -direct
+
 .PHONY: check
 ## Run tests and linters
 check: test lint
