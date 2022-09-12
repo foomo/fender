@@ -2,6 +2,11 @@
 
 ## === Tasks ===
 
+.PHONY: gomod
+## Run go mod tidy
+gomod:
+	go mod tidy
+
 .PHONY: check
 ## Run tests and linters
 check: test lint
