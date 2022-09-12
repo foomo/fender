@@ -38,7 +38,7 @@ func WrapError(err error, cause *Error) error {
 
 func UnwrapError(err error) *Error {
 	c := errors.Cause(err)
-	if v, ok := c.(*Error); ok {
+	if v, ok := c.(*Error); ok { //nolint:errorlint
 		return v
 	}
 	return nil

@@ -19,7 +19,7 @@ func (e *Error) Is(err error) bool {
 	if err == nil {
 		return false
 	}
-	_, ok := err.(*Error)
+	_, ok := err.(*Error) //nolint:errorlint
 	return ok
 }
 

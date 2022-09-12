@@ -1,7 +1,5 @@
 package rule
 
-const NameCustom = "custom"
-
 // NewCustomRuleError constructor
 func NewCustomRuleError(rule string, meta ...string) *Error {
 	var m []string

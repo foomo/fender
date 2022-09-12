@@ -26,7 +26,7 @@ func Bool(expected bool) BoolRule {
 
 func True(v bool) Rule {
 	return func() (*Error, error) {
-		if v {
+		if !v {
 			return NewBoolRuleError(true), nil
 		}
 		return nil, nil
@@ -35,7 +35,7 @@ func True(v bool) Rule {
 
 func False(v bool) Rule {
 	return func() (*Error, error) {
-		if !v {
+		if v {
 			return NewBoolRuleError(false), nil
 		}
 		return nil, nil

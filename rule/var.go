@@ -19,8 +19,10 @@ func Var(tag string) InterfaceRule {
 	return func(v interface{}) Rule {
 		return func() (*Error, error) {
 			if err := config.Validator.Var(v, tag); err != nil {
-				for _, err := range err.(validator.ValidationErrors) {
-					return NewVarError(err.Tag(), err.Param()), nil
+				if validationErrors, ok := err.(validator.ValidationErrors); ok { //nolint:errorlint
+					for _, err := range validationErrors {
+						return NewVarError(err.Tag(), err.Param()), nil
+					}
 				}
 			}
 			return nil, nil

@@ -15,9 +15,15 @@ var Err = &Error{Rule: ""}
 
 // NewError constructor
 func NewError(rule string, meta ...string) *Error {
+	var m []string
+	for _, v := range meta {
+		if strings.TrimSpace(v) != "" {
+			m = append(m, v)
+		}
+	}
 	return &Error{
 		Rule: rule,
-		Meta: strings.Join(meta, config.MetaDelimiter),
+		Meta: strings.Join(m, config.MetaDelimiter),
 	}
 }
 
@@ -26,7 +32,7 @@ func (e *Error) Is(err error) bool {
 	if err == nil {
 		return false
 	}
-	if v, ok := err.(*Error); ok && (v.Rule == e.Rule || v.Rule == "") {
+	if v, ok := err.(*Error); ok && (v.Rule == e.Rule || v.Rule == "") { //nolint:errorlint
 		return true
 	}
 	return false
