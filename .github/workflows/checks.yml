@@ -21,7 +21,7 @@ jobs:
     outputs:
       gomod: ${{ steps.gomod.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.1.0
       - id: gomod
         run: |
           matrix=$(find . -type f -name "go.mod" -print0 | xargs -0 -n1 dirname | sort --unique | jq -R -s -c 'split("\n")[:-1]')
@@ -35,7 +35,7 @@ jobs:
       matrix:
         gomod: ${{ fromJson(needs.matrix.outputs.gomod) }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.1.0
       - uses: actions/setup-go@v3
         with:
           go-version-file: 'go.mod'
@@ -46,7 +46,7 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.1.0
       - uses: actions/setup-go@v3
         with:
           go-version-file: 'go.mod'
