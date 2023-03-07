@@ -19,7 +19,7 @@ check: test lint
 .PHONY: test
 ## Run tests
 test:
-	gotestsum --format short-verbose ./...
+	gotestsum --format dots-v2 ./...
 
 .PHONY: lint
 ## Run linter
