@@ -20,11 +20,11 @@ func (e *FieldError) Error() string {
 // should be func FendField[T any](name string, value T, rules ...rule.Rule[T]) validation.Validator {}
 func Field[T any](name string, value T, rules ...func(ctx context.Context, v T) error) Fend {
 	return func(ctx context.Context, mode Mode) error {
-		var cause error
+		var causes error
 		for _, r := range rules {
 			err := r(ctx, value)
 			if e, ok := err.(*rule.Error); ok { //nolint:errorlint
-				cause = multierr.Append(cause, e)
+				causes = multierr.Append(causes, e)
 				// break if we only want the first error
 				if mode == ModeFirst {
 					break
@@ -33,8 +33,8 @@ func Field[T any](name string, value T, rules ...func(ctx context.Context, v T) 
 				return err
 			}
 		}
-		if cause != nil {
-			return NewError(name, cause)
+		if causes != nil {
+			return NewError(name, causes)
 		}
 		return nil
 	}

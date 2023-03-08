@@ -1,6 +1,7 @@
 package fend
 
 import (
+	"errors"
 	"strings"
 
 	"github.com/foomo/fender/config"
@@ -38,4 +39,12 @@ func (e *Error) Errors() []error {
 
 func (e *Error) Unwrap() error {
 	return e.cause
+}
+
+func AsError(err error) *Error {
+	var fendErr *Error
+	if errors.As(err, &fendErr) {
+		return fendErr
+	}
+	return nil
 }
