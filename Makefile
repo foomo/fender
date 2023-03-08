@@ -21,6 +21,11 @@ check: test lint
 test:
 	gotestsum --format dots-v2 ./...
 
+.PHONY: bench
+## Run benchmarks
+bench:
+	go test -bench | prettybench
+
 .PHONY: lint
 ## Run linter
 lint:

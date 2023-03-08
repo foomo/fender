@@ -1,12 +1,11 @@
 package rule
 
 import (
+	"context"
 	"fmt"
 )
 
-const NameBool = "bool"
-
-var ErrBool = &Error{Rule: NameBool}
+const NameBool Name = "bool"
 
 // NewBoolRuleError constructor
 func NewBoolRuleError(v bool) *Error {
@@ -14,30 +13,24 @@ func NewBoolRuleError(v bool) *Error {
 }
 
 func Bool(expected bool) BoolRule {
-	return func(v bool) Rule {
-		return func() (*Error, error) {
-			if v != expected {
-				return NewBoolRuleError(expected), nil
-			}
-			return nil, nil
+	return func(ctx context.Context, v bool) error {
+		if v != expected {
+			return NewBoolRuleError(expected)
 		}
+		return nil
 	}
 }
 
-func True(v bool) Rule {
-	return func() (*Error, error) {
-		if !v {
-			return NewBoolRuleError(true), nil
-		}
-		return nil, nil
+func True(ctx context.Context, v bool) error {
+	if !v {
+		return NewBoolRuleError(true)
 	}
+	return nil
 }
 
-func False(v bool) Rule {
-	return func() (*Error, error) {
-		if v {
-			return NewBoolRuleError(false), nil
-		}
-		return nil, nil
+func False(ctx context.Context, v bool) error {
+	if v {
+		return NewBoolRuleError(false)
 	}
+	return nil
 }

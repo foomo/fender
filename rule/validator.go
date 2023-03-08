@@ -1,12 +1,14 @@
 package rule
 
-const NameValid = "valid"
+import (
+	"context"
+)
+
+const NameValid Name = "valid"
 
 type Validator interface {
 	Valid() bool
 }
-
-var ErrValid = &Error{Rule: NameValid}
 
 // NewValidError constructor
 func NewValidError() *Error {
@@ -14,12 +16,10 @@ func NewValidError() *Error {
 }
 
 func Valid() ValidatorRule {
-	return func(v Validator) Rule {
-		return func() (*Error, error) {
-			if !v.Valid() {
-				return NewValidError(), nil
-			}
-			return nil, nil
+	return func(ctx context.Context, v Validator) error {
+		if !v.Valid() {
+			return NewValidError()
 		}
+		return nil
 	}
 }

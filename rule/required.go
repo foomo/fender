@@ -1,109 +1,89 @@
 package rule
 
-const NameRequired = "required"
+import (
+	"context"
+)
 
-var ErrRequired = &Error{Rule: NameRequired}
+const NameRequired Name = "required"
 
 // NewRequiredError constructor
 func NewRequiredError() *Error {
 	return NewError(NameRequired)
 }
 
-func RequiredInt(v int) Rule {
-	return func() (*Error, error) {
-		if v == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredInt(ctx context.Context, v int) error {
+	if v == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }
 
-func RequiredInt8(v int8) Rule {
-	return func() (*Error, error) {
-		if v == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredInt8(ctx context.Context, v int8) error {
+	if v == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }
 
-func RequiredInt32(v int32) Rule {
-	return func() (*Error, error) {
-		if v == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredInt32(ctx context.Context, v int32) error {
+	if v == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }
 
-func RequiredInt64(v int64) Rule {
-	return func() (*Error, error) {
-		if v == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredInt64(ctx context.Context, v int64) error {
+	if v == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }
 
-func RequiredUInt(v uint) Rule {
-	return func() (*Error, error) {
-		if v == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredUInt(ctx context.Context, v uint) error {
+	if v == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }
 
-func RequiredUInt8(v uint8) Rule {
-	return func() (*Error, error) {
-		if v == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredUInt8(ctx context.Context, v uint8) error {
+	if v == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }
 
-func RequiredUInt32(v uint32) Rule {
-	return func() (*Error, error) {
-		if v == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredUInt32(ctx context.Context, v uint32) error {
+	if v == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }
 
-func RequiredUInt64(v uint64) Rule {
-	return func() (*Error, error) {
-		if v == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredUInt64(ctx context.Context, v uint64) error {
+	if v == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }
 
-func RequiredFloat32(v float32) Rule {
-	return func() (*Error, error) {
-		if v == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredFloat32(ctx context.Context, v float32) error {
+	if v == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }
 
-func RequiredFloat64(v float64) Rule {
-	return func() (*Error, error) {
-		if v == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredFloat64(ctx context.Context, v float64) error {
+	if v == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }
 
-func RequiredString(v string) Rule {
-	return func() (*Error, error) {
-		if len(v) == 0 {
-			return NewRequiredError(), nil
-		}
-		return nil, nil
+func RequiredString(ctx context.Context, v string) error {
+	if len(v) == 0 {
+		return NewRequiredError()
 	}
+	return nil
 }

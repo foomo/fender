@@ -1,7 +1,6 @@
-package fender
+package fend
 
 import (
-	"errors"
 	"strings"
 
 	"github.com/foomo/fender/config"
@@ -9,13 +8,19 @@ import (
 )
 
 type Error struct {
+	name  string
 	cause error
 }
 
-func NewError(cause error) *Error {
+func NewError(name string, cause error) *Error {
 	return &Error{
+		name:  name,
 		cause: cause,
 	}
+}
+
+func (e *Error) Name() string {
+	return e.name
 }
 
 func (e *Error) Error() string {
@@ -24,14 +29,7 @@ func (e *Error) Error() string {
 	for i, cause := range errs {
 		causes[i] = cause.Error()
 	}
-	return strings.Join(causes, config.FendDelimiter)
-}
-
-func (e *Error) First() error {
-	if errs := e.Errors(); len(errs) > 0 {
-		return errs[0]
-	}
-	return nil
+	return e.name + config.FendNameDelimiter + strings.Join(causes, config.RuleDelimiter)
 }
 
 func (e *Error) Errors() []error {
@@ -40,12 +38,4 @@ func (e *Error) Errors() []error {
 
 func (e *Error) Unwrap() error {
 	return e.cause
-}
-
-func AsError(err error) *Error {
-	var fendErr *Error
-	if errors.As(err, &fendErr) {
-		return fendErr
-	}
-	return nil
 }

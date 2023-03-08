@@ -1,7 +1,7 @@
 package rule
 
 // NewCustomRuleError constructor
-func NewCustomRuleError(rule string, meta ...string) *Error {
+func NewCustomRuleError(rule Name, meta ...string) *Error {
 	var m []string
 	for _, v := range meta {
 		if v != "" {

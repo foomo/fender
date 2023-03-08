@@ -1,6 +1,7 @@
 package rule_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/foomo/fender/rule"
@@ -43,8 +44,8 @@ func TestEmail(t *testing.T) {
 	}
 	for email, valid := range testEmails {
 		t.Run(email, func(t *testing.T) {
-			if ruleErr, _ := rule.Email(email)(); (ruleErr == nil) != valid {
-				t.Errorf("Email() error = %v, wantErr %v", ruleErr, !valid)
+			if err := rule.Email(context.TODO(), email); (err == nil) != valid {
+				t.Errorf("Email() error = %v, wantErr %v", err, !valid)
 			}
 		})
 	}
@@ -87,8 +88,8 @@ func TestEmailWeak(t *testing.T) {
 	}
 	for email, valid := range testEmails {
 		t.Run(email, func(t *testing.T) {
-			if ruleErr, _ := rule.EmailWeak(email)(); (ruleErr == nil) != valid {
-				t.Errorf("Email() error = %v, wantErr %v", ruleErr, !valid)
+			if err := rule.EmailWeak(context.TODO(), email); (err == nil) != valid {
+				t.Errorf("Email() error = %v, wantErr %v", err, !valid)
 			}
 		})
 	}
@@ -120,8 +121,8 @@ func Test_emailHostLookup(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if ruleErr, _ := rule.EmailLookup(tt.args.v)(); (ruleErr != nil) != tt.wantErr {
-				t.Errorf("emailHostLookup() error = %v, wantErr %v", ruleErr, tt.wantErr)
+			if err := rule.EmailLookup(context.TODO(), tt.args.v); (err != nil) != tt.wantErr {
+				t.Errorf("emailHostLookup() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

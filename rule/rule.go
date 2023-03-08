@@ -1,19 +1,28 @@
 package rule
 
-type (
-	Rule          func() (*Error, error)
-	IntRule       func(v int) Rule
-	Int8Rule      func(v int8) Rule
-	Int32Rule     func(v int32) Rule
-	Int64Rule     func(v int64) Rule
-	UIntRule      func(v uint) Rule
-	UInt8Rule     func(v uint8) Rule
-	UInt32Rule    func(v uint32) Rule
-	UInt64Rule    func(v uint64) Rule
-	Float32Rule   func(v float32) Rule
-	Float64Rule   func(v float64) Rule
-	BoolRule      func(v bool) Rule
-	StringRule    func(v string) Rule
-	ValidatorRule func(v Validator) Rule
-	InterfaceRule func(v interface{}) Rule
+import (
+	"context"
 )
+
+type (
+	Name          string
+	Rule[T any]   func(ctx context.Context, v T) error
+	IntRule       func(ctx context.Context, v int) error
+	Int8Rule      func(ctx context.Context, v int8) error
+	Int32Rule     func(ctx context.Context, v int32) error
+	Int64Rule     func(ctx context.Context, v int64) error
+	UIntRule      func(ctx context.Context, v uint) error
+	UInt8Rule     func(ctx context.Context, v uint8) error
+	UInt32Rule    func(ctx context.Context, v uint32) error
+	UInt64Rule    func(ctx context.Context, v uint64) error
+	Float32Rule   func(ctx context.Context, v float32) error
+	Float64Rule   func(ctx context.Context, v float64) error
+	BoolRule      func(ctx context.Context, v bool) error
+	StringRule    func(ctx context.Context, v string) error
+	ValidatorRule func(ctx context.Context, v Validator) error
+	InterfaceRule func(ctx context.Context, v interface{}) error
+)
+
+func (n Name) String() string {
+	return string(n)
+}

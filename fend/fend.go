@@ -1,5 +1,7 @@
 package fend
 
-import "github.com/foomo/fender/rule"
+import (
+	"context"
+)
 
-type Fend func() []rule.Rule
+type Fend func(ctx context.Context, mode Mode) error
