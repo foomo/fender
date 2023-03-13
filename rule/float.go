@@ -29,6 +29,13 @@ func FloatRequired[T Float](ctx context.Context, v T) error {
 	return nil
 }
 
+func FloatNotRequired[T Float](ctx context.Context, v T) error {
+	if v == T(0) {
+		return ErrBreak
+	}
+	return nil
+}
+
 func FloatSize[T Float](expected T) FloatRule[T] {
 	return func(ctx context.Context, v T) error {
 		if v != expected {

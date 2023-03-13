@@ -29,6 +29,13 @@ func UIntRequired(ctx context.Context, v uint) error {
 	return nil
 }
 
+func UIntNotRequired(ctx context.Context, v uint) error {
+	if v == 0 {
+		return ErrBreak
+	}
+	return nil
+}
+
 func UIntSize(expected uint) UIntRule {
 	return func(ctx context.Context, v uint) error {
 		if v != expected {

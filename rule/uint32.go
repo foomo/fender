@@ -29,6 +29,13 @@ func UInt32Required(ctx context.Context, v uint32) error {
 	return nil
 }
 
+func UInt32NotRequired(ctx context.Context, v uint32) error {
+	if v == 0 {
+		return ErrBreak
+	}
+	return nil
+}
+
 func UInt32Size(expected uint32) UInt32Rule {
 	return func(ctx context.Context, v uint32) error {
 		if v != expected {

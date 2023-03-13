@@ -29,6 +29,13 @@ func Float64Required(ctx context.Context, v float64) error {
 	return nil
 }
 
+func Float64NotRequired(ctx context.Context, v float64) error {
+	if v == 0 {
+		return ErrBreak
+	}
+	return nil
+}
+
 func Float64Size(expected float64) Float64Rule {
 	return func(ctx context.Context, v float64) error {
 		if v != expected {

@@ -29,6 +29,13 @@ func Int64Required(ctx context.Context, v int64) error {
 	return nil
 }
 
+func Int64NotRequired(ctx context.Context, v int64) error {
+	if v == 0 {
+		return ErrBreak
+	}
+	return nil
+}
+
 func Int64Size(expected int64) Int64Rule {
 	return func(ctx context.Context, v int64) error {
 		if v != expected {

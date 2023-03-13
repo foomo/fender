@@ -2,11 +2,9 @@ package rule
 
 import (
 	"context"
-
-	"golang.org/x/exp/constraints"
 )
 
-func IntegerMin[T constraints.Integer](expected T) IntegerRule[T] {
+func IntegerMin[T Integer](expected T) IntegerRule[T] {
 	return func(ctx context.Context, v T) error {
 		if v < expected {
 			return NewErrorf(NameMin, 'd', expected)
@@ -15,7 +13,7 @@ func IntegerMin[T constraints.Integer](expected T) IntegerRule[T] {
 	}
 }
 
-func IntegerMax[T constraints.Integer](expected T) IntegerRule[T] {
+func IntegerMax[T Integer](expected T) IntegerRule[T] {
 	return func(ctx context.Context, v T) error {
 		if v > expected {
 			return NewErrorf(NameMax, 'd', expected)
@@ -24,14 +22,21 @@ func IntegerMax[T constraints.Integer](expected T) IntegerRule[T] {
 	}
 }
 
-func IntegerRequired[T constraints.Integer](ctx context.Context, v T) error {
+func IntegerRequired[T Integer](ctx context.Context, v T) error {
 	if v == T(0) {
 		return NewError(NameRequired)
 	}
 	return nil
 }
 
-func IntegerSize[T constraints.Integer](expected T) IntegerRule[T] {
+func IntegerNotRequired[T Integer](ctx context.Context, v T) error {
+	if v == T(0) {
+		return ErrBreak
+	}
+	return nil
+}
+
+func IntegerSize[T Integer](expected T) IntegerRule[T] {
 	return func(ctx context.Context, v T) error {
 		if v != expected {
 			return NewErrorf(NameSize, 'd', expected)
@@ -40,7 +45,7 @@ func IntegerSize[T constraints.Integer](expected T) IntegerRule[T] {
 	}
 }
 
-func IntegerOmitEmpty[T constraints.Integer](ctx context.Context, v T) error {
+func IntegerOmitEmpty[T Integer](ctx context.Context, v T) error {
 	if v == T(0) {
 		return ErrBreak
 	}

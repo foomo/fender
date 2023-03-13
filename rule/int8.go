@@ -29,6 +29,13 @@ func Int8Required(ctx context.Context, v int8) error {
 	return nil
 }
 
+func Int8NotRequired(ctx context.Context, v int8) error {
+	if v == 0 {
+		return ErrBreak
+	}
+	return nil
+}
+
 func Int8Size(expected int8) Int8Rule {
 	return func(ctx context.Context, v int8) error {
 		if v != expected {

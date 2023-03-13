@@ -29,6 +29,13 @@ func Float32Required(ctx context.Context, v float32) error {
 	return nil
 }
 
+func Float32NotRequired(ctx context.Context, v float32) error {
+	if v == 0 {
+		return ErrBreak
+	}
+	return nil
+}
+
 func Float32Size(expected float32) Float32Rule {
 	return func(ctx context.Context, v float32) error {
 		if v != expected {

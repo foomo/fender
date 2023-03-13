@@ -7,7 +7,7 @@ import (
 
 func Required[T any](ctx context.Context, v T) error {
 	if reflect.ValueOf(v).IsZero() {
-		return NewRequiredError()
+		return NewError(NameRequired)
 	}
 	return nil
 }

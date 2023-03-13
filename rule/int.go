@@ -29,6 +29,13 @@ func IntRequired(ctx context.Context, v int) error {
 	return nil
 }
 
+func IntNotRequired(ctx context.Context, v int) error {
+	if v == 0 {
+		return ErrBreak
+	}
+	return nil
+}
+
 func IntSize(expected int) IntRule {
 	return func(ctx context.Context, v int) error {
 		if v != expected {
