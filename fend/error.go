@@ -30,7 +30,7 @@ func (e *Error) Error() string {
 	for i, cause := range errs {
 		causes[i] = cause.Error()
 	}
-	return e.name + config.FendNameDelimiter + strings.Join(causes, config.RuleDelimiter)
+	return e.name + config.DelimiterFendName + strings.Join(causes, config.DelimiterRule)
 }
 
 func (e *Error) Errors() []error {

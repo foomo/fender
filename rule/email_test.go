@@ -46,6 +46,7 @@ func TestEmail(t *testing.T) {
 		t.Run(email, func(t *testing.T) {
 			if err := rule.Email(context.TODO(), email); (err == nil) != valid {
 				t.Errorf("Email() error = %v, wantErr %v", err, !valid)
+				t.Log()
 			}
 		})
 	}

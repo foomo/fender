@@ -7,9 +7,6 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-// EmailRegexWeak as https://davidcel.is/posts/stop-validating-email-addresses-with-regex/
-var EmailRegexWeak = `.+@.+\..+`
-
 var Validator = validator.New()
 
 func init() {

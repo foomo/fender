@@ -12,8 +12,8 @@ import (
 func ExampleAll() {
 	err := fender.All(
 		context.Background(),
-		fend.Field("one", "", rule.RequiredString, rule.MinString(10)),
-		fend.Field("two", "", rule.RequiredString, rule.MinString(10)),
+		fend.Field("one", "", rule.StringRequired, rule.StringMin(10)),
+		fend.Field("two", "", rule.StringRequired, rule.StringMin(10)),
 	)
 	// check for fender error
 	if fendErr := fender.AsError(err); fendErr != nil {
@@ -27,8 +27,8 @@ func ExampleAll() {
 func ExampleFirst() {
 	err := fender.First(
 		context.Background(),
-		fend.Field("one", "", rule.RequiredString, rule.MinString(10)),
-		fend.Field("two", "", rule.RequiredString, rule.MinString(10)),
+		fend.Field("one", "", rule.StringRequired, rule.StringMin(10)),
+		fend.Field("two", "", rule.StringRequired, rule.StringMin(10)),
 	)
 
 	// check for fender error
@@ -43,8 +43,8 @@ func ExampleFirst() {
 func ExampleAllFirst() {
 	err := fender.AllFirst(
 		context.Background(),
-		fend.Field("one", "", rule.RequiredString, rule.MinString(10)),
-		fend.Field("two", "", rule.RequiredString, rule.MinString(10)),
+		fend.Field("one", "", rule.StringRequired, rule.StringMin(10)),
+		fend.Field("two", "", rule.StringRequired, rule.StringMin(10)),
 	)
 
 	// check for fender error
@@ -59,8 +59,8 @@ func ExampleAllFirst() {
 func ExampleErrors() { //nolint:govet
 	err := fender.All(
 		context.Background(),
-		fend.Field("one", "", rule.RequiredString, rule.MinString(10)),
-		fend.Field("two", "", rule.RequiredString, rule.MinString(10)),
+		fend.Field("one", "", rule.StringRequired, rule.StringMin(10)),
+		fend.Field("two", "", rule.StringRequired, rule.StringMin(10)),
 	)
 
 	// cast fender error

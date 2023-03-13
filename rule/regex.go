@@ -5,18 +5,29 @@ import (
 	"regexp"
 )
 
-const NameRegex Name = "regex"
-
-// NewRegexError constructor
-func NewRegexError() *Error {
-	return NewError(NameRegex)
+func RegexMatch(name string, regexp ...*regexp.Regexp) StringRule {
+	return func(ctx context.Context, v string) error {
+		if v == "" {
+			return NewError(NameRegex, name)
+		}
+		for _, r := range regexp {
+			if !r.MatchString(v) {
+				return NewError(NameRegex, name)
+			}
+		}
+		return nil
+	}
 }
 
-// Regex validation using go standard package
-func Regex(regexp *regexp.Regexp) StringRule {
+func RegexNotMatch(name string, regexp ...*regexp.Regexp) StringRule {
 	return func(ctx context.Context, v string) error {
-		if !regexp.MatchString(v) {
-			return NewRegexError()
+		if v == "" {
+			return NewError(NameRegex, name)
+		}
+		for _, r := range regexp {
+			if r.MatchString(v) {
+				return NewError(NameRegex, name)
+			}
 		}
 		return nil
 	}

@@ -6,8 +6,8 @@ import (
 	"github.com/foomo/fender/rule"
 )
 
-func Var[T any](value T, rules ...rule.Rule[T]) Fend {
+func Fn(rules ...rule.Fn) Fend {
 	return func(ctx context.Context, mode Mode) error {
-		return fend(ctx, mode, "", value, rules...)
+		return fendFn(ctx, mode, "", rules...)
 	}
 }

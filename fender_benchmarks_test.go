@@ -36,18 +36,18 @@ func BenchmarkAll(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = fender.All(
 					context.TODO(),
-					fend.Field("int", u.Int, rule.RequiredInt, rule.MinInt(1), rule.MaxInt(5)),
-					fend.Field("int8", u.Int8, rule.RequiredInt8, rule.MinInt8(1), rule.MaxInt8(5)),
-					fend.Field("int32", u.Int32, rule.RequiredInt32, rule.MinInt32(1), rule.MaxInt32(5)),
-					fend.Field("int64", u.Int64, rule.RequiredInt64, rule.MinInt64(1), rule.MaxInt64(5)),
-					fend.Field("uint", u.UInt, rule.RequiredUInt, rule.MinUInt(1), rule.MaxUInt(5)),
-					fend.Field("uint8", u.UInt8, rule.RequiredUInt8, rule.MinUInt8(1), rule.MaxUInt8(5)),
-					fend.Field("uint32", u.UInt32, rule.RequiredUInt32, rule.MinUInt32(1), rule.MaxUInt32(5)),
-					fend.Field("uint64", u.UInt64, rule.RequiredUInt64, rule.MinUInt64(1), rule.MaxUInt64(5)),
-					fend.Field("float32", u.Float32, rule.RequiredFloat32, rule.MinFloat32(1), rule.MaxFloat32(5)),
-					fend.Field("float64", u.Float64, rule.RequiredFloat64, rule.MinFloat64(1), rule.MaxFloat64(5)),
+					fend.Field("int", u.Int, rule.IntRequired, rule.IntMin(1), rule.IntMax(5)),
+					fend.Field("int8", u.Int8, rule.Int8Required, rule.Int8Min(1), rule.Int8Max(5)),
+					fend.Field("int32", u.Int32, rule.Int32Required, rule.Int32Min(1), rule.Int32Max(5)),
+					fend.Field("int64", u.Int64, rule.Int64Required, rule.Int64Min(1), rule.Int64Max(5)),
+					fend.Field("uint", u.UInt, rule.UIntRequired, rule.UIntMin(1), rule.UIntMax(5)),
+					fend.Field("uint8", u.UInt8, rule.UInt8Required, rule.UInt8Min(1), rule.UInt8Max(5)),
+					fend.Field("uint32", u.UInt32, rule.UInt32Required, rule.UInt32Min(1), rule.UInt32Max(5)),
+					fend.Field("uint64", u.UInt64, rule.UInt64Required, rule.UInt64Min(1), rule.UInt64Max(5)),
+					fend.Field("float32", u.Float32, rule.Float32Required, rule.Float32Min(1), rule.Float32Max(5)),
+					fend.Field("float64", u.Float64, rule.Float64Required, rule.Float64Min(1), rule.Float64Max(5)),
 					fend.Field("bool", u.Bool, rule.Bool(true)),
-					fend.Field("string", u.String, rule.RequiredString),
+					fend.Field("string", u.String, rule.StringRequired),
 				)
 			}
 		})
@@ -77,18 +77,18 @@ func BenchmarkAll(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = fender.All(
 					context.TODO(),
-					fend.Field("int", u.Int, rule.RequiredInt, rule.MinInt(1), rule.MaxInt(5)),
-					fend.Field("int8", u.Int8, rule.RequiredInt8, rule.MinInt8(1), rule.MaxInt8(5)),
-					fend.Field("int32", u.Int32, rule.RequiredInt32, rule.MinInt32(1), rule.MaxInt32(5)),
-					fend.Field("int64", u.Int64, rule.RequiredInt64, rule.MinInt64(1), rule.MaxInt64(5)),
-					fend.Field("uint", u.UInt, rule.RequiredUInt, rule.MinUInt(1), rule.MaxUInt(5)),
-					fend.Field("uint8", u.UInt8, rule.RequiredUInt8, rule.MinUInt8(1), rule.MaxUInt8(5)),
-					fend.Field("uint32", u.UInt32, rule.RequiredUInt32, rule.MinUInt32(1), rule.MaxUInt32(5)),
-					fend.Field("uint64", u.UInt64, rule.RequiredUInt64, rule.MinUInt64(1), rule.MaxUInt64(5)),
-					fend.Field("float32", u.Float32, rule.RequiredFloat32, rule.MinFloat32(1), rule.MaxFloat32(5)),
-					fend.Field("float64", u.Float64, rule.RequiredFloat64, rule.MinFloat64(1), rule.MaxFloat64(5)),
+					fend.Field("int", u.Int, rule.IntRequired, rule.IntMin(1), rule.IntMax(5)),
+					fend.Field("int8", u.Int8, rule.Int8Required, rule.Int8Min(1), rule.Int8Max(5)),
+					fend.Field("int32", u.Int32, rule.Int32Required, rule.Int32Min(1), rule.Int32Max(5)),
+					fend.Field("int64", u.Int64, rule.Int64Required, rule.Int64Min(1), rule.Int64Max(5)),
+					fend.Field("uint", u.UInt, rule.UIntRequired, rule.UIntMin(1), rule.UIntMax(5)),
+					fend.Field("uint8", u.UInt8, rule.UInt8Required, rule.UInt8Min(1), rule.UInt8Max(5)),
+					fend.Field("uint32", u.UInt32, rule.UInt32Required, rule.UInt32Min(1), rule.UInt32Max(5)),
+					fend.Field("uint64", u.UInt64, rule.UInt64Required, rule.UInt64Min(1), rule.UInt64Max(5)),
+					fend.Field("float32", u.Float32, rule.Float32Required, rule.Float32Min(1), rule.Float32Max(5)),
+					fend.Field("float64", u.Float64, rule.Float64Required, rule.Float64Min(1), rule.Float64Max(5)),
 					fend.Field("bool", u.Bool, rule.Bool(true)),
-					fend.Field("string", u.String, rule.RequiredString),
+					fend.Field("string", u.String, rule.StringRequired),
 				)
 			}
 		})

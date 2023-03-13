@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/foomo/fender/config"
+	"github.com/foomo/fender/fend"
+	"github.com/foomo/fender/rule"
 	"go.uber.org/multierr"
 )
 
@@ -18,13 +20,21 @@ func NewError(cause error) *Error {
 	}
 }
 
+func NewFendError(name string, cause error) *Error {
+	return NewError(fend.NewError(name, cause))
+}
+
+func NewFendRuleError(name string, ruleName rule.Name, ruleMeta ...string) *Error {
+	return NewFendError(name, rule.NewError(ruleName, ruleMeta...))
+}
+
 func (e *Error) Error() string {
 	errs := multierr.Errors(e.cause)
 	causes := make([]string, len(errs))
 	for i, cause := range errs {
 		causes[i] = cause.Error()
 	}
-	return strings.Join(causes, config.FendDelimiter)
+	return strings.Join(causes, config.DelimiterFend)
 }
 
 func (e *Error) First() error {
