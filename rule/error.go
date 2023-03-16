@@ -10,38 +10,25 @@ import (
 
 type Error struct {
 	Rule Name
-	Meta string
+	Meta []string
 }
 
 // NewError constructor
 func NewError(rule Name, meta ...string) *Error {
-	var m []string
-	for _, v := range meta {
-		if strings.TrimSpace(v) != "" {
-			m = append(m, v)
-		}
-	}
 	return &Error{
 		Rule: rule,
-		Meta: strings.Join(m, config.DelimiterRuleMeta),
+		Meta: meta,
 	}
-}
-
-func NewErrorf(name Name, verb rune, v ...any) *Error {
-	meta := make([]string, len(v))
-	for i, a := range v {
-		meta[i] = fmt.Sprintf("%"+string(verb), a)
-	}
-	return NewError(name, meta...)
 }
 
 // Error interface
 func (e *Error) Error() string {
 	s := e.Rule.String()
-	if e.Meta != "" && strings.Contains(e.Meta, config.DelimiterRuleMeta) {
-		s = e.Meta
-	} else if e.Meta != "" {
-		s += config.DelimiterRuleMeta + e.Meta
+	if len(e.Meta) > 0 {
+		s += config.DelimiterRuleMeta + e.Meta[0]
+	}
+	if len(e.Meta) > 1 {
+		s = fmt.Sprintf("%s[%s]", s, strings.Join(e.Meta[1:], ","))
 	}
 	return s
 }
@@ -52,4 +39,8 @@ func AsError(err error) *Error {
 		return fendErr
 	}
 	return nil
+}
+
+func Meta(verb rune, value any) string {
+	return fmt.Sprintf("%"+string(verb), value)
 }

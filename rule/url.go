@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+const NameURL Name = "url"
+
 func URL(ctx context.Context, v string) error {
 	if i := strings.Index(v, "#"); i > -1 {
 		v = v[:i]

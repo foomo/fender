@@ -8,4 +8,7 @@ type (
 	Integer = constraints.Integer
 	Ordered = constraints.Ordered
 	Float   = constraints.Float
+	Number  interface {
+		Integer | Float
+	}
 )

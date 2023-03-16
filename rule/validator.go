@@ -4,9 +4,14 @@ import (
 	"context"
 )
 
-type Validator interface {
-	Valid() bool
-}
+const NameValid Name = "valid"
+
+type (
+	Validator interface {
+		Valid() bool
+	}
+	ValidatorRule = Rule[Validator]
+)
 
 func Valid[T Validator](ctx context.Context, v T) error {
 	if !v.Valid() {

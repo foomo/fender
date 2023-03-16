@@ -12,105 +12,102 @@ import (
 
 // https://github.com/frederikhors/bench-golang-validators
 
+/*
+benchmark                           iter        time/iter   bytes alloc          allocs
+---------                           ----        ---------   -----------          ------
+BenchmarkAll/playground/v1-10    5310297     214.30 ns/op      208 B/op     6 allocs/op
+BenchmarkAll/playground/v2-10      77941   14893.00 ns/op    15394 B/op   185 allocs/op
+BenchmarkAll/playground/v3-10   10654539     113.20 ns/op        8 B/op     1 allocs/op
+BenchmarkAll/playground/v4-10      79444   14544.00 ns/op    15200 B/op   180 allocs/op
+BenchmarkAll/fender/v1-10        3328400     364.40 ns/op      360 B/op    11 allocs/op
+BenchmarkAll/fender/v2-10        3569961     332.50 ns/op      328 B/op     9 allocs/op
+BenchmarkAll/fender/v3-10        9554830     126.90 ns/op      136 B/op     4 allocs/op
+BenchmarkAll/fender/v4-10       12320528      97.84 ns/op      104 B/op     2 allocs/op    919 ns/op
+*/
+
 func BenchmarkAll(b *testing.B) {
 	type Test struct {
-		Int     int     `validate:"required,min=1,max=5"`
-		Int8    int8    `validate:"required,min=1,max=5"`
-		Int32   int32   `validate:"required,min=1,max=5"`
-		Int64   int64   `validate:"required,min=1,max=5"`
-		UInt    uint    `validate:"required,min=1,max=5"`
-		UInt8   uint8   `validate:"required,min=1,max=5"`
-		UInt32  uint32  `validate:"required,min=1,max=5"`
-		UInt64  uint64  `validate:"required,min=1,max=5"`
-		Float32 float32 `validate:"required,min=1,max=5"`
-		Float64 float64 `validate:"required,min=1,max=5"`
-		Bool    bool    `validate:"required"`
-		String  string  `validate:"required"`
+		Int int `validate:"required,min=1,max=5"`
 	}
-	v := validator.New()
-
-	b.Run("invalid reused", func(b *testing.B) {
-		u := &Test{}
-
-		b.Run("fender", func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = fender.All(
-					context.TODO(),
-					fend.Field("int", u.Int, rule.IntRequired, rule.IntMin(1), rule.IntMax(5)),
-					fend.Field("int8", u.Int8, rule.Int8Required, rule.Int8Min(1), rule.Int8Max(5)),
-					fend.Field("int32", u.Int32, rule.Int32Required, rule.Int32Min(1), rule.Int32Max(5)),
-					fend.Field("int64", u.Int64, rule.Int64Required, rule.Int64Min(1), rule.Int64Max(5)),
-					fend.Field("uint", u.UInt, rule.UIntRequired, rule.UIntMin(1), rule.UIntMax(5)),
-					fend.Field("uint8", u.UInt8, rule.UInt8Required, rule.UInt8Min(1), rule.UInt8Max(5)),
-					fend.Field("uint32", u.UInt32, rule.UInt32Required, rule.UInt32Min(1), rule.UInt32Max(5)),
-					fend.Field("uint64", u.UInt64, rule.UInt64Required, rule.UInt64Min(1), rule.UInt64Max(5)),
-					fend.Field("float32", u.Float32, rule.Float32Required, rule.Float32Min(1), rule.Float32Max(5)),
-					fend.Field("float64", u.Float64, rule.Float64Required, rule.Float64Min(1), rule.Float64Max(5)),
-					fend.Field("bool", u.Bool, rule.Bool(true)),
-					fend.Field("string", u.String, rule.StringRequired),
-				)
-			}
-		})
-		b.Run("playground", func(b *testing.B) {
+	b.Run("playground", func(b *testing.B) {
+		b.Run("v1", func(b *testing.B) {
+			u := &Test{}
+			v := validator.New()
+			b.ResetTimer()
+			b.ReportAllocs()
 			for i := 0; i < b.N; i++ {
 				_ = v.Struct(u)
+			}
+		})
+		b.Run("v2", func(b *testing.B) {
+			u := &Test{}
+			b.ResetTimer()
+			b.ReportAllocs()
+			for i := 0; i < b.N; i++ {
+				_ = validator.New().Struct(u)
+			}
+		})
+		b.Run("v3", func(b *testing.B) {
+			u := &Test{Int: 3}
+			v := validator.New()
+			b.ResetTimer()
+			b.ReportAllocs()
+			for i := 0; i < b.N; i++ {
+				_ = v.Struct(u)
+			}
+		})
+		b.Run("v4", func(b *testing.B) {
+			u := &Test{Int: 3}
+			b.ResetTimer()
+			b.ReportAllocs()
+			for i := 0; i < b.N; i++ {
+				_ = validator.New().Struct(u)
 			}
 		})
 	})
 
-	b.Run("success new", func(b *testing.B) {
-		u := &Test{
-			Int:     1,
-			Int8:    1,
-			Int32:   1,
-			Int64:   1,
-			UInt:    1,
-			UInt8:   1,
-			UInt32:  1,
-			UInt64:  1,
-			Float32: 1,
-			Float64: 1,
-			Bool:    true,
-			String:  "true",
-		}
-		b.Run("fender", func(b *testing.B) {
+	b.Run("fender", func(b *testing.B) {
+		b.Run("v1", func(b *testing.B) {
+			u := &Test{}
+			b.ResetTimer()
+			b.ReportAllocs()
 			for i := 0; i < b.N; i++ {
-				_ = fender.All(
-					context.TODO(),
-					fend.Field("int", u.Int, rule.IntRequired, rule.IntMin(1), rule.IntMax(5)),
-					fend.Field("int8", u.Int8, rule.Int8Required, rule.Int8Min(1), rule.Int8Max(5)),
-					fend.Field("int32", u.Int32, rule.Int32Required, rule.Int32Min(1), rule.Int32Max(5)),
-					fend.Field("int64", u.Int64, rule.Int64Required, rule.Int64Min(1), rule.Int64Max(5)),
-					fend.Field("uint", u.UInt, rule.UIntRequired, rule.UIntMin(1), rule.UIntMax(5)),
-					fend.Field("uint8", u.UInt8, rule.UInt8Required, rule.UInt8Min(1), rule.UInt8Max(5)),
-					fend.Field("uint32", u.UInt32, rule.UInt32Required, rule.UInt32Min(1), rule.UInt32Max(5)),
-					fend.Field("uint64", u.UInt64, rule.UInt64Required, rule.UInt64Min(1), rule.UInt64Max(5)),
-					fend.Field("float32", u.Float32, rule.Float32Required, rule.Float32Min(1), rule.Float32Max(5)),
-					fend.Field("float64", u.Float64, rule.Float64Required, rule.Float64Min(1), rule.Float64Max(5)),
-					fend.Field("bool", u.Bool, rule.Bool(true)),
-					fend.Field("string", u.String, rule.StringRequired),
+				_ = fender.All(context.TODO(),
+					fend.Field("int", u.Int, rule.Required[int], rule.NumberMin[int](1), rule.NumberMax[int](5)),
 				)
 			}
 		})
-
-		b.Run("playground", func(b *testing.B) {
+		b.Run("v2", func(b *testing.B) {
+			u := &Test{}
+			rules := fend.NewRules(rule.Required[int], rule.NumberMin[int](1), rule.NumberMax[int](5))
+			b.ResetTimer()
+			b.ReportAllocs()
 			for i := 0; i < b.N; i++ {
-				_ = v.Struct(u)
+				_ = fender.All(context.TODO(),
+					rules.Fend("int", u.Int),
+				)
+			}
+		})
+		b.Run("v3", func(b *testing.B) {
+			u := &Test{Int: 3}
+			b.ResetTimer()
+			b.ReportAllocs()
+			for i := 0; i < b.N; i++ {
+				_ = fender.All(context.TODO(),
+					fend.Field("int", u.Int, rule.Required[int], rule.NumberMin[int](1), rule.NumberMax[int](5)),
+				)
+			}
+		})
+		b.Run("v4", func(b *testing.B) {
+			u := &Test{Int: 3}
+			rules := fend.NewRules(rule.Required[int], rule.NumberMin[int](1), rule.NumberMax[int](5))
+			b.ResetTimer()
+			b.ReportAllocs()
+			for i := 0; i < b.N; i++ {
+				_ = fender.All(context.TODO(),
+					rules.Fend("int", u.Int),
+				)
 			}
 		})
 	})
 }
-
-/*
-v0
-BenchmarkSimpleStruct/invalid_reused/fender-12  	  				  220735	      4943 ns/op
-BenchmarkSimpleStruct/invalid_reused/playground-12         	  405120	      2849 ns/op
-BenchmarkSimpleStruct/success_new/fender-12                	  177958	      5747 ns/op
-BenchmarkSimpleStruct/success_new/playground-12            	  719839	      1578 ns/op
-
-v1
-BenchmarkSimpleStruct/invalid_reused/fender-10  	            316605	      4050 ns/op
-BenchmarkSimpleStruct/invalid_reused/playground-10         	  683263	      1741 ns/op
-BenchmarkSimpleStruct/success_new/fender-10                	 1000000	      1036 ns/op
-BenchmarkSimpleStruct/success_new/playground-10            	 1312262	       919 ns/op
-*/

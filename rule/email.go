@@ -9,6 +9,8 @@ import (
 	"github.com/foomo/fender/config"
 )
 
+const NameEmail Name = "email"
+
 // Email validation using go standard package
 func Email(ctx context.Context, v string) error {
 	if _, err := mail.ParseAddress(v); err != nil {

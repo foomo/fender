@@ -2,27 +2,27 @@ package rule
 
 import (
 	"context"
+	"strconv"
 )
 
-func Bool(expected bool) BoolRule {
+const NameBool Name = "bool"
+
+func Bool(expectd bool) BoolRule {
 	return func(ctx context.Context, v bool) error {
-		if v != expected {
-			return NewErrorf(NameBool, 't', v)
+		if v != expectd {
+			return NewError(NameBool, Meta('T', expectd))
 		}
 		return nil
 	}
 }
 
-func BoolTrue(ctx context.Context, v bool) error {
-	if !v {
-		return NewErrorf(NameBool, 't', v)
+func StringBool(expectd bool) StringRule {
+	return func(ctx context.Context, v string) error {
+		if b, err := strconv.ParseBool(v); err != nil {
+			return NewError(NameBool)
+		} else if b != expectd {
+			return NewError(NameBool, Meta('T', expectd))
+		}
+		return nil
 	}
-	return nil
-}
-
-func BoolFalse(ctx context.Context, v bool) error {
-	if v {
-		return NewErrorf(NameBool, 't', v)
-	}
-	return nil
 }

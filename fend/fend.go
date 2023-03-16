@@ -32,7 +32,7 @@ func fend[T any](ctx context.Context, mode Mode, meta string, value T, rules ...
 	return nil
 }
 
-func fendFn(ctx context.Context, mode Mode, meta string, rules ...rule.Fn) error {
+func fendDynamic(ctx context.Context, mode Mode, meta string, rules ...rule.DynamicRule) error {
 	var causes error
 	for _, r := range rules {
 		err := r(ctx)

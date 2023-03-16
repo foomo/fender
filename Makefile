@@ -24,7 +24,7 @@ test:
 .PHONY: bench
 ## Run benchmarks
 bench:
-	go test -bench=. | prettybench
+	go test -run ^$$ -bench . | prettybench
 
 .PHONY: lint
 ## Run linter

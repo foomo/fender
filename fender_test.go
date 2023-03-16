@@ -2,7 +2,6 @@ package fender_test
 
 import (
 	"context"
-	"errors"
 	"testing"
 
 	"github.com/foomo/fender"
@@ -11,102 +10,133 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAll(t *testing.T) {
-	t.Run("success", func(t *testing.T) {
-		err := fender.All(
-			context.TODO(),
-			fend.Field("foo", "foo", rule.StringRequired, rule.StringMin(1)),
-			fend.Field("bar", "foo", rule.StringRequired, rule.StringMin(1)),
-		)
-		assert.NoError(t, err)
-	})
+type Gender string
 
-	t.Run("errors", func(t *testing.T) {
-		err := fender.All(
-			context.TODO(),
-			fend.Field("foo", "", rule.StringRequired, rule.StringMin(10)),
-			fend.Field("bar", "bar", rule.StringRequired, rule.StringMin(10)),
-		)
-		if fendErr := fender.AsError(err); assert.NotNil(t, fendErr) {
-			errs := fendErr.Errors()
-			assert.Len(t, errs, 2)
-		}
-		assert.EqualError(t, err, "foo:required:min=10;bar:min=10")
-	})
+const (
+	GenderMale    Gender = "male"
+	GenderFemmale Gender = "female"
+)
 
-	t.Run("errors combined", func(t *testing.T) {
-		err := fender.All(
-			context.TODO(),
-			fend.Field("foo", "", rule.StringRequired, rule.StringMin(10)),
-			fend.Field("foo", "", rule.StringMin(10), rule.StringRequired),
-		)
-		if fendErr := fender.AsError(err); assert.NotNil(t, fendErr) {
-			errs := fendErr.Errors()
-			assert.Len(t, errs, 2)
-		}
-		assert.EqualError(t, err, "foo:required:min=10;foo:min=10:required")
-	})
-
-	t.Run("return std error", func(t *testing.T) {
-		e := errors.New("std error")
-		err := fender.All(
-			context.TODO(),
-			fend.Field("one", "", rule.StringRequired),
-			fend.Field("foo", "", func(ctx context.Context, v string) error {
-				return e
-			}),
-		)
-		assert.Nil(t, fender.AsError(err))
-		assert.EqualError(t, err, e.Error())
-	})
+func (g Gender) String() string {
+	return string(g)
 }
 
-func TestFirst(t *testing.T) {
-	t.Run("success", func(t *testing.T) {
-		err := fender.First(
-			context.TODO(),
-			fend.Field("foo", "", rule.StringRequired),
-		)
-		if fendErr := fender.AsError(err); assert.NotNil(t, fendErr) {
-			first := fender.AsError(err).First()
-			assert.NotNil(t, rule.AsError(first))
-		}
-		assert.EqualError(t, err, "foo:required")
-	})
+func (g Gender) Valid() bool {
+	return g == GenderMale || g == GenderFemmale
+}
 
-	t.Run("error string", func(t *testing.T) {
-		err := fender.First(
-			context.TODO(),
-			fend.Field("foo", "", rule.StringMin(10)),
-		)
-		if fendErr := fender.AsError(err); assert.NotNil(t, fendErr) {
-			first := fender.AsError(err).First()
-			assert.NotNil(t, rule.AsError(first))
-		}
-		assert.EqualError(t, err, "foo:min=10")
-	})
+var (
+	email = fend.NewRules(
+		rule.StringMin(6),
+		rule.StringMax(30),
+		rule.Email,
+	)
+	title = fend.NewRules(
+		rule.StringMin(2),
+		rule.NotEqual("dr."),
+	)
+	gender = fend.NewRules(
+		rule.Valid[Gender],
+	)
+	dynamic = fend.DynamicVar(
+		func(ctx context.Context) error {
+			return fend.NewRuleError("dynamic", "foo")
+		},
+	)
+	firstName = fend.NewRules(
+		rule.StringMin(6),
+		rule.StringMax(30),
+		rule.Alpha,
+	)
+	streetNumber = fend.NewRules(
+		rule.NumberMin(1),
+		rule.NumberMax(10),
+	)
+)
 
-	t.Run("error var", func(t *testing.T) {
-		err := fender.First(
-			context.TODO(),
-			fend.Field("foo", "", rule.Var("min=10")),
-		)
-		if fendErr := fender.AsError(err); assert.NotNil(t, fendErr) {
-			first := fender.AsError(err).First()
-			assert.NotNil(t, rule.AsError(first))
-		}
-		assert.EqualError(t, err, "foo:min=10")
-	})
+func TestAll(t *testing.T) {
+	tests := []struct {
+		name            string
+		fends           fend.Fends
+		wantAllErr      string
+		wantFirstErr    string
+		wantAllFirstErr string
+	}{
+		{
+			name: "success values",
+			fends: fend.Fends{
+				title.FendVar("dr"),
+				gender.FendVar(GenderMale),
+				firstName.FendVar("foobar"),
+				streetNumber.FendVar(5),
+				email.FendVar("foo@bar.com"),
+			},
+		},
+		{
+			name: "failure values",
+			fends: fend.Fends{
+				title.FendVar("dr."),
+				gender.FendVar("divers"),
+				firstName.FendVar("foo"),
+				streetNumber.FendVar(15),
+				email.FendVar("foo"),
+				dynamic,
+			},
+			wantAllErr:      "equal=dr.;valid;min=6;min=10;min=6:email=parse;dynamic:foo",
+			wantFirstErr:    "equal=dr.",
+			wantAllFirstErr: "equal=dr.",
+		},
+		{
+			name: "success fields",
+			fends: fend.Fends{
+				title.Fend("title", "dr"),
+				gender.Fend("gender", GenderMale),
+				firstName.Fend("firstName", "foobar"),
+				streetNumber.Fend("firstName", 5),
+				email.Fend("email", "foo@bar.com"),
+			},
+		},
+		{
+			name: "failure fields",
+			fends: fend.Fends{
+				title.Fend("title", "dr."),
+				gender.Fend("gender", "divers"),
+				firstName.Fend("firstName", "foo"),
+				streetNumber.Fend("firstName", 15),
+				email.Fend("email", "foo"),
+				dynamic,
+			},
+			wantAllErr:      "equal=dr.;valid;min=6;min=10;min=6:email=parse;dynamic:foo",
+			wantFirstErr:    "equal=dr.",
+			wantAllFirstErr: "equal=dr.",
+		},
+	}
 
-	t.Run("return std error", func(t *testing.T) {
-		e := errors.New("std error")
-		err := fender.First(
-			context.TODO(),
-			fend.Field("foo", "", func(ctx context.Context, v string) error {
-				return e
-			}),
-		)
-		assert.Nil(t, fender.AsError(err))
-		assert.EqualError(t, err, e.Error())
-	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := fender.All(context.TODO(), tt.fends...); tt.wantAllErr == "" {
+				assert.NoError(t, err)
+			} else {
+				assert.EqualError(t, err, tt.wantAllErr)
+			}
+
+			if err := fender.All(context.TODO(), tt.fends...); tt.wantAllErr == "" {
+				assert.NoError(t, err)
+			} else {
+				assert.EqualError(t, err, tt.wantAllErr)
+			}
+
+			if err := fender.First(context.TODO(), tt.fends...); tt.wantFirstErr == "" {
+				assert.NoError(t, err)
+			} else {
+				assert.EqualError(t, err, tt.wantFirstErr)
+			}
+
+			if err := fender.AllFirst(context.TODO(), tt.fends...); tt.wantAllFirstErr == "" {
+				assert.NoError(t, err)
+			} else {
+				assert.EqualError(t, err, tt.wantAllFirstErr)
+			}
+		})
+	}
 }
