@@ -6,12 +6,9 @@ import (
 
 type (
 	Rule[T any]   func(ctx context.Context, v T) error
-	DynamicRule   func(ctx context.Context) error
-	Rules[T any]  []Rule[T]
 	AnyRule       = Rule[any]
 	BoolRule      = Rule[bool]
 	StringRule    = Rule[string]
-	StringRules   = Rules[string]
 	IntRule       = Rule[int]
 	Int8Rule      = Rule[int8]
 	Int32Rule     = Rule[int32]
@@ -23,12 +20,5 @@ type (
 	Float32Rule   = Rule[float32]
 	Float64Rule   = Rule[float64]
 	InterfaceRule = Rule[interface{}]
+	DynamicRule   func(ctx context.Context) error
 )
-
-func (r Rules[T]) Append(rules ...Rule[T]) Rules[T] {
-	return append(r, rules...)
-}
-
-func (r Rules[T]) Prepend(rules ...Rule[T]) Rules[T] {
-	return append(rules, r...)
-}
