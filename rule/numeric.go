@@ -8,4 +8,4 @@ const (
 	NameNumeric Name = "numeric"
 )
 
-var Numeric = Match(NameNumeric.String(), config.RegexCharsNumeric)
+var Numeric = Match(NameNumeric.String(), config.RegexNumeric)

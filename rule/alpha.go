@@ -6,4 +6,4 @@ import (
 
 const NameAlpha Name = "alpha"
 
-var Alpha = Match(NameAlpha.String(), config.RegexCharsAlpha)
+var Alpha = Match(NameAlpha.String(), config.RegexAlpha)

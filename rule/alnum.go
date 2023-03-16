@@ -6,4 +6,4 @@ import (
 
 const NameAlnum Name = "alnum"
 
-var Alnum = Match(NameAlnum.String(), config.RegexCharsAlnum)
+var Alnum = Match(NameAlnum.String(), config.RegexAlnum)
