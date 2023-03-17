@@ -14,7 +14,7 @@ func NewRules[T any](rules ...rule.Rule[T]) Rules[T] {
 
 func (r Rules[T]) Field(path string, value T, rules ...rule.Rule[T]) Fend {
 	return func(ctx context.Context, mode Mode) error {
-		return fend(ctx, mode, "", value, rule.Rules[T](rules).Append(r...)...)
+		return fend(ctx, mode, path, value, rule.Rules[T](rules).Append(r...)...)
 	}
 }
 

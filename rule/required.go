@@ -25,24 +25,3 @@ func IsRequired[T any](expected bool) Rule[T] {
 		return nil
 	}
 }
-
-func BoolRequired(ctx context.Context, v bool) error {
-	if !v {
-		return NewError(NameRequired)
-	}
-	return nil
-}
-
-func StringRequired(ctx context.Context, v string) error {
-	if len(v) == 0 {
-		return NewError(NameRequired)
-	}
-	return nil
-}
-
-func NumberRequired[T Number](ctx context.Context, v T) error {
-	if v == T(0) {
-		return NewError(NameRequired)
-	}
-	return nil
-}
