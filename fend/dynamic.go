@@ -6,9 +6,9 @@ import (
 	"github.com/foomo/fender/rule"
 )
 
-func DynamicField(name string, rules ...rule.DynamicRule) Fend {
+func DynamicField(path string, rules ...rule.DynamicRule) Fend {
 	return func(ctx context.Context, mode Mode) error {
-		return fendDynamic(ctx, mode, name, rules...)
+		return fendDynamic(ctx, mode, path, rules...)
 	}
 }
 
