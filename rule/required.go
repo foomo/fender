@@ -14,6 +14,18 @@ func Required[T any](ctx context.Context, v T) error {
 	return nil
 }
 
+func IsRequired[T any](expected bool) Rule[T] {
+	return func(ctx context.Context, v T) error {
+		if !expected {
+			return ErrBreak
+		}
+		if reflect.ValueOf(v).IsZero() {
+			return NewError(NameRequired)
+		}
+		return nil
+	}
+}
+
 func BoolRequired(ctx context.Context, v bool) error {
 	if !v {
 		return NewError(NameRequired)
