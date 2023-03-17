@@ -84,7 +84,7 @@ func BenchmarkAll(b *testing.B) {
 			b.ReportAllocs()
 			for i := 0; i < b.N; i++ {
 				_ = fender.All(context.TODO(),
-					rules.Fend("int", u.Int),
+					rules.Field("int", u.Int),
 				)
 			}
 		})
@@ -105,7 +105,7 @@ func BenchmarkAll(b *testing.B) {
 			b.ReportAllocs()
 			for i := 0; i < b.N; i++ {
 				_ = fender.All(context.TODO(),
-					rules.Fend("int", u.Int),
+					rules.Field("int", u.Int),
 				)
 			}
 		})
