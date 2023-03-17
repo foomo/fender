@@ -82,7 +82,7 @@ func TestAll(t *testing.T) {
 				email.Var("foo"),
 				dynamic,
 			},
-			wantAllErr:      "equal=dr.;valid;min=6;min=10;min=6:email=parse;dynamic:foo",
+			wantAllErr:      "equal=dr.;valid;min=6;max=10;min=6:email=parse;dynamic:foo",
 			wantFirstErr:    "equal=dr.",
 			wantAllFirstErr: "equal=dr.",
 		},
@@ -106,9 +106,9 @@ func TestAll(t *testing.T) {
 				email.Field("email", "foo"),
 				dynamic,
 			},
-			wantAllErr:      "equal=dr.;valid;min=6;min=10;min=6:email=parse;dynamic:foo",
-			wantFirstErr:    "equal=dr.",
-			wantAllFirstErr: "equal=dr.",
+			wantAllErr:      "title:equal=dr.;gender:valid;firstName:min=6;firstName:max=10;email:min=6:email=parse;dynamic:foo",
+			wantFirstErr:    "title:equal=dr.",
+			wantAllFirstErr: "title:equal=dr.",
 		},
 	}
 
