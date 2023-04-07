@@ -16,7 +16,7 @@ func Prefix(expected string) StringRule {
 	}
 }
 
-func NotPrefix(expected string) StringRule {
+func NoPrefix(expected string) StringRule {
 	return func(ctx context.Context, v string) error {
 		if strings.HasPrefix(v, expected) {
 			return NewError(NamePrefix, Meta('d', expected))
