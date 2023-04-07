@@ -1,19 +1,24 @@
 package rule
 
+import (
+	"context"
+)
+
 type (
-	Rule          func() (*Error, error)
-	IntRule       func(v int) Rule
-	Int8Rule      func(v int8) Rule
-	Int32Rule     func(v int32) Rule
-	Int64Rule     func(v int64) Rule
-	UIntRule      func(v uint) Rule
-	UInt8Rule     func(v uint8) Rule
-	UInt32Rule    func(v uint32) Rule
-	UInt64Rule    func(v uint64) Rule
-	Float32Rule   func(v float32) Rule
-	Float64Rule   func(v float64) Rule
-	BoolRule      func(v bool) Rule
-	StringRule    func(v string) Rule
-	ValidatorRule func(v Validator) Rule
-	InterfaceRule func(v interface{}) Rule
+	Rule[T any]   func(ctx context.Context, v T) error
+	AnyRule       = Rule[any]
+	BoolRule      = Rule[bool]
+	StringRule    = Rule[string]
+	IntRule       = Rule[int]
+	Int8Rule      = Rule[int8]
+	Int32Rule     = Rule[int32]
+	Int64Rule     = Rule[int64]
+	UIntRule      = Rule[uint]
+	UInt8Rule     = Rule[uint8]
+	UInt32Rule    = Rule[uint32]
+	UInt64Rule    = Rule[uint64]
+	Float32Rule   = Rule[float32]
+	Float64Rule   = Rule[float64]
+	InterfaceRule = Rule[interface{}]
+	DynamicRule   func(ctx context.Context) error
 )

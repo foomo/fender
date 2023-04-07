@@ -1,43 +1,28 @@
 package rule
 
 import (
-	"fmt"
+	"context"
+	"strconv"
 )
 
-const NameBool = "bool"
+const NameBool Name = "bool"
 
-var ErrBool = &Error{Rule: NameBool}
-
-// NewBoolRuleError constructor
-func NewBoolRuleError(v bool) *Error {
-	return NewError(NameBool, fmt.Sprintf("%t", v))
-}
-
-func Bool(expected bool) BoolRule {
-	return func(v bool) Rule {
-		return func() (*Error, error) {
-			if v != expected {
-				return NewBoolRuleError(expected), nil
-			}
-			return nil, nil
+func Bool(expectd bool) BoolRule {
+	return func(ctx context.Context, v bool) error {
+		if v != expectd {
+			return NewError(NameBool, Meta('T', expectd))
 		}
+		return nil
 	}
 }
 
-func True(v bool) Rule {
-	return func() (*Error, error) {
-		if !v {
-			return NewBoolRuleError(true), nil
+func StringBool(expectd bool) StringRule {
+	return func(ctx context.Context, v string) error {
+		if b, err := strconv.ParseBool(v); err != nil {
+			return NewError(NameBool)
+		} else if b != expectd {
+			return NewError(NameBool, Meta('T', expectd))
 		}
-		return nil, nil
-	}
-}
-
-func False(v bool) Rule {
-	return func() (*Error, error) {
-		if v {
-			return NewBoolRuleError(false), nil
-		}
-		return nil, nil
+		return nil
 	}
 }

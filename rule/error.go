@@ -1,50 +1,46 @@
 package rule
 
 import (
+	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/foomo/fender/config"
 )
 
 type Error struct {
-	Rule string
-	Meta string
+	Rule Name
+	Meta []string
 }
-
-var Err = &Error{Rule: ""}
 
 // NewError constructor
-func NewError(rule string, meta ...string) *Error {
-	var m []string
-	for _, v := range meta {
-		if strings.TrimSpace(v) != "" {
-			m = append(m, v)
-		}
-	}
+func NewError(rule Name, meta ...string) *Error {
 	return &Error{
 		Rule: rule,
-		Meta: strings.Join(m, config.MetaDelimiter),
+		Meta: meta,
 	}
-}
-
-// Is interface
-func (e *Error) Is(err error) bool {
-	if err == nil {
-		return false
-	}
-	if v, ok := err.(*Error); ok && (v.Rule == e.Rule || v.Rule == "") { //nolint:errorlint
-		return true
-	}
-	return false
 }
 
 // Error interface
 func (e *Error) Error() string {
-	s := e.Rule
-	if e.Meta != "" && strings.Contains(e.Meta, config.MetaDelimiter) {
-		s = e.Meta
-	} else if e.Meta != "" {
-		s += config.MetaDelimiter + e.Meta
+	s := e.Rule.String()
+	if len(e.Meta) > 0 {
+		s += config.DelimiterRuleMeta + e.Meta[0]
+	}
+	if len(e.Meta) > 1 {
+		s = fmt.Sprintf("%s[%s]", s, strings.Join(e.Meta[1:], ","))
 	}
 	return s
+}
+
+func AsError(err error) *Error {
+	var fendErr *Error
+	if errors.As(err, &fendErr) {
+		return fendErr
+	}
+	return nil
+}
+
+func Meta(verb rune, value any) string {
+	return fmt.Sprintf("%"+string(verb), value)
 }

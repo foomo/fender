@@ -1,155 +1,37 @@
 package fend
 
-import "github.com/foomo/fender/rule"
+import (
+	"context"
 
-func Int(v int, rules ...rule.IntRule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
+	"github.com/foomo/fender/rule"
+)
+
+type Rules[T any] []rule.Rule[T]
+
+func NewRules[T any](rules ...rule.Rule[T]) Rules[T] {
+	return rules
+}
+
+func (r Rules[T]) Field(path string, value T, rules ...rule.Rule[T]) Fend {
+	return func(ctx context.Context, mode Mode) error {
+		return fend(ctx, mode, path, value, rule.Rules[T](rules).Append(r...)...)
 	}
 }
 
-func Int8(v int8, rules ...rule.Int8Rule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
+func (r Rules[T]) Var(value T, rules ...rule.Rule[T]) Fend {
+	return func(ctx context.Context, mode Mode) error {
+		return fend(ctx, mode, "", value, rule.Rules[T](rules).Append(r...)...)
 	}
 }
 
-func Int32(v int32, rules ...rule.Int32Rule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
+func (r Rules[T]) DynamicField(path string, rules ...rule.DynamicRule) Fend {
+	return func(ctx context.Context, mode Mode) error {
+		return fendDynamic(ctx, mode, path, rules...)
 	}
 }
 
-func Int64(v int64, rules ...rule.Int64Rule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
-	}
-}
-
-func UInt(v uint, rules ...rule.UIntRule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
-	}
-}
-
-func UInt8(v uint8, rules ...rule.UInt8Rule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
-	}
-}
-
-func UInt32(v uint32, rules ...rule.UInt32Rule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
-	}
-}
-
-func UInt64(v uint64, rules ...rule.UInt64Rule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
-	}
-}
-
-func Float32(v float32, rules ...rule.Float32Rule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
-	}
-}
-
-func Float64(v float64, rules ...rule.Float64Rule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
-	}
-}
-
-func Bool(v bool, rules ...rule.BoolRule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
-	}
-}
-
-func String(v string, rules ...rule.StringRule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
-	}
-}
-
-func Interface(v interface{}, rules ...rule.InterfaceRule) Fend {
-	return func() []rule.Rule {
-		ret := make([]rule.Rule, 0, len(rules))
-		for _, r := range rules {
-			ret = append(ret, r(v))
-		}
-		return ret
-	}
-}
-
-func Valid(v rule.Validator) Fend {
-	return func() []rule.Rule {
-		return []rule.Rule{
-			rule.Valid()(v),
-		}
-	}
-}
-
-func Var(v interface{}, tag string) Fend {
-	return func() []rule.Rule {
-		return []rule.Rule{
-			rule.Var(tag)(v),
-		}
-	}
-}
-
-func Custom(v rule.Rule) Fend {
-	return func() []rule.Rule {
-		return []rule.Rule{v}
+func (r Rules[T]) DynamicVar(rules ...rule.DynamicRule) Fend {
+	return func(ctx context.Context, mode Mode) error {
+		return fendDynamic(ctx, mode, "", rules...)
 	}
 }

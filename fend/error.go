@@ -1,47 +1,48 @@
-package fender
+package fend
 
 import (
 	"errors"
 	"strings"
 
 	"github.com/foomo/fender/config"
-	"github.com/foomo/fender/fend"
 	"github.com/foomo/fender/rule"
 	"go.uber.org/multierr"
 )
 
 type Error struct {
+	name  string
 	cause error
 }
 
-func NewError(cause error) *Error {
+func NewError(name string, cause error) *Error {
 	return &Error{
+		name:  name,
 		cause: cause,
 	}
 }
 
-func NewFendError(name string, cause error) *Error {
-	return NewError(fend.NewError(name, cause))
+func NewRuleError(name string, ruleName rule.Name, meta ...string) *Error {
+	return &Error{
+		name:  name,
+		cause: rule.NewError(ruleName, meta...),
+	}
 }
 
-func NewFendRuleError(name string, ruleName rule.Name, ruleMeta ...string) *Error {
-	return NewFendError(name, rule.NewError(ruleName, ruleMeta...))
+func (e *Error) Name() string {
+	return e.name
 }
 
 func (e *Error) Error() string {
+	var ret string
 	errs := multierr.Errors(e.cause)
 	causes := make([]string, len(errs))
 	for i, cause := range errs {
 		causes[i] = cause.Error()
 	}
-	return strings.Join(causes, config.DelimiterFend)
-}
-
-func (e *Error) First() error {
-	if errs := e.Errors(); len(errs) > 0 {
-		return errs[0]
+	if e.name != "" {
+		ret += e.name + config.DelimiterFendName
 	}
-	return nil
+	return ret + strings.Join(causes, config.DelimiterRule)
 }
 
 func (e *Error) Errors() []error {
