@@ -2,7 +2,7 @@
 
 > a piece of rope or a tyre that protects the side of a boat from knocks
 
-Fender provides a unified way to validate data and make the errors passable to the frontend e.g. through gotsrpc.
+Fender provides a unified way to validate data and on the backend & frontend side.
 
 ## Usage
 
