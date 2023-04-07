@@ -16,7 +16,7 @@ func Suffix(expected string) StringRule {
 	}
 }
 
-func NotSuffix(expected string) StringRule {
+func NoSuffix(expected string) StringRule {
 	return func(ctx context.Context, v string) error {
 		if strings.HasSuffix(v, expected) {
 			return NewError(NameSuffix, Meta('d', expected))
