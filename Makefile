@@ -4,7 +4,7 @@
 
 .PHONY: gomod
 ## Run go mod tidy
-gomod:
+tidy:
 	go mod tidy
 
 .PHONY: outdated
