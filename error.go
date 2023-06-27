@@ -7,21 +7,20 @@ import (
 	"github.com/foomo/fender/config"
 	"github.com/foomo/fender/fend"
 	"github.com/foomo/fender/rule"
-	"go.uber.org/multierr"
 )
 
 type Error struct {
-	cause error
+	FendErrs []*fend.Error
 }
 
-func NewError(cause error) *Error {
+func NewError(fendErrs ...*fend.Error) *Error {
 	return &Error{
-		cause: cause,
+		FendErrs: fendErrs,
 	}
 }
 
-func NewFendError(name string, cause error) *Error {
-	return NewError(fend.NewError(name, cause))
+func NewFendError(name string, ruleErrs ...*rule.Error) *Error {
+	return NewError(fend.NewError(name, ruleErrs...))
 }
 
 func NewFendRuleError(name string, ruleName rule.Name, ruleMeta ...string) *Error {
@@ -29,9 +28,8 @@ func NewFendRuleError(name string, ruleName rule.Name, ruleMeta ...string) *Erro
 }
 
 func (e *Error) Error() string {
-	errs := multierr.Errors(e.cause)
-	causes := make([]string, len(errs))
-	for i, cause := range errs {
+	causes := make([]string, len(e.FendErrs))
+	for i, cause := range e.FendErrs {
 		causes[i] = cause.Error()
 	}
 	return strings.Join(causes, config.DelimiterFend)
@@ -45,12 +43,16 @@ func (e *Error) First() error {
 }
 
 func (e *Error) Errors() []error {
-	return multierr.Errors(e.cause)
+	causes := make([]error, len(e.FendErrs))
+	for i, fendErr := range e.FendErrs {
+		causes[i] = fendErr
+	}
+	return causes
 }
 
-func (e *Error) Unwrap() error {
-	return e.cause
-}
+// func (e *Error) Unwrap() error {
+// 	return e.cause
+// }
 
 func AsError(err error) *Error {
 	var fendErr *Error

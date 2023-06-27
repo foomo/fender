@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/foomo/fender/fend"
-	"go.uber.org/multierr"
 )
 
 func All(ctx context.Context, fends ...fend.Fend) error {
@@ -20,12 +19,12 @@ func AllFirst(ctx context.Context, fends ...fend.Fend) error {
 }
 
 func Mode(ctx context.Context, mode fend.Mode, fends ...fend.Fend) error {
-	var cause error
+	var cause []*fend.Error
 	for _, validator := range fends {
 		err := validator(ctx, mode)
 		if e, ok := err.(*fend.Error); ok { //nolint:errorlint
 			// append error
-			cause = multierr.Append(cause, e)
+			cause = append(cause, e)
 			// break if we only want the first errors
 			if mode == fend.ModeFirst || mode == fend.ModeAllFirst {
 				break
@@ -35,7 +34,7 @@ func Mode(ctx context.Context, mode fend.Mode, fends ...fend.Fend) error {
 		}
 	}
 	if cause != nil {
-		return NewError(cause)
+		return NewError(cause...)
 	}
 	return nil
 }
