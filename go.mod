@@ -3,7 +3,7 @@ module github.com/foomo/fender
 go 1.20
 
 require (
-	github.com/go-playground/validator/v10 v10.15.3
+	github.com/go-playground/validator/v10 v10.16.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/exp v0.0.0-20230307190834-24139beb5833
 )
