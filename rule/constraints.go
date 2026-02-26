@@ -3,9 +3,7 @@ package rule
 import (
 	"cmp"
 
-	"cmp"
-
-	"golang.org/x/exp/constraints"
+	"golang.org/x/exp/constraints" //nolint:exptostd // not all supported yet
 )
 
 type (
