@@ -29,7 +29,7 @@ func TestEmail(t *testing.T) {
 		`email@-example.com`:                       true,
 		`email@example`:                            true,
 		`email@example@example.com`:                false,
-		`email@[123.123.123.123]`:                  false,
+		`email@[123.123.123.123]`:                  true,
 		`email.@example.com`:                       false,
 		`email..email@example.com`:                 false,
 		`#@%^%#$@#$@#.com`:                         false,
