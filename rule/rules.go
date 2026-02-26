@@ -15,7 +15,7 @@ type (
 	UInt64Rules    = Rules[uint64]
 	Float32Rules   = Rules[float32]
 	Float64Rules   = Rules[float64]
-	InterfaceRules = Rules[interface{}]
+	InterfaceRules = Rules[any]
 )
 
 func (r Rules[T]) Append(rules ...Rule[T]) Rules[T] {

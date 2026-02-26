@@ -1,0 +1,45 @@
+name: Test Branch
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: jdx/mise-action@v3
+
+      - uses: actions/setup-go@v6
+        with:
+          check-latest: true
+          go-version-file: 'go.mod'
+
+      - name: Setup golangci-lint cache
+        uses: actions/cache@v5
+        with:
+          path: /home/runner/.cache/golangci-lint
+          key: golangci-lint-${{ runner.os }}-${{ hashFiles('**/go.mod') }}
+          restore-keys: |
+            golangci-lint-${{ runner.os }}-
+
+      - name: Run go mod tidy
+        run: make tidy && git diff --exit-code
+
+      - name: Run go generate
+        run: make generate && git diff --exit-code
+
+      - name: Run go lint
+        run: make lint
+
+      - name: Run go tests
+        run: make test

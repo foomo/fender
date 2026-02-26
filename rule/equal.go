@@ -11,6 +11,7 @@ func Equal[T comparable](expected T) Rule[T] {
 		if v != expected {
 			return NewError(NameEqual, Meta('s', expected))
 		}
+
 		return nil
 	}
 }
@@ -20,6 +21,7 @@ func NotEqual[T comparable](expected T) Rule[T] {
 		if v == expected {
 			return NewError(NameEqual, Meta('s', expected))
 		}
+
 		return nil
 	}
 }

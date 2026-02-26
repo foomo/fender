@@ -1,8 +1,6 @@
 package rule
 
-import (
-	"golang.org/x/exp/constraints"
-)
+import "golang.org/x/exp/constraints"
 
 type (
 	Integer = constraints.Integer

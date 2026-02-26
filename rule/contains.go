@@ -12,6 +12,7 @@ func StringContains(expected string) StringRule {
 		if !strings.Contains(v, expected) {
 			return NewError(NameContains)
 		}
+
 		return nil
 	}
 }
@@ -21,6 +22,7 @@ func StringNotContains(expected string) StringRule {
 		if strings.Contains(v, expected) {
 			return NewError(NameContains)
 		}
+
 		return nil
 	}
 }

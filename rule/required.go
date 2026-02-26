@@ -11,6 +11,7 @@ func Required[T any](ctx context.Context, v T) error {
 	if reflect.ValueOf(v).IsZero() {
 		return NewError(NameRequired)
 	}
+
 	return nil
 }
 
@@ -19,9 +20,11 @@ func IsRequired[T any](expected bool) Rule[T] {
 		if !expected {
 			return ErrBreak
 		}
+
 		if reflect.ValueOf(v).IsZero() {
 			return NewError(NameRequired)
 		}
+
 		return nil
 	}
 }

@@ -29,20 +29,25 @@ func BenchmarkAll(b *testing.B) {
 	type Test struct {
 		Int int `validate:"required,min=1,max=5"`
 	}
+
 	b.Run("playground", func(b *testing.B) {
 		b.Run("v1", func(b *testing.B) {
 			u := &Test{}
 			v := validator.New()
+
 			b.ResetTimer()
 			b.ReportAllocs()
+
 			for i := 0; i < b.N; i++ {
 				_ = v.Struct(u)
 			}
 		})
 		b.Run("v2", func(b *testing.B) {
 			u := &Test{}
+
 			b.ResetTimer()
 			b.ReportAllocs()
+
 			for i := 0; i < b.N; i++ {
 				_ = validator.New().Struct(u)
 			}
@@ -50,16 +55,20 @@ func BenchmarkAll(b *testing.B) {
 		b.Run("v3", func(b *testing.B) {
 			u := &Test{Int: 3}
 			v := validator.New()
+
 			b.ResetTimer()
 			b.ReportAllocs()
+
 			for i := 0; i < b.N; i++ {
 				_ = v.Struct(u)
 			}
 		})
 		b.Run("v4", func(b *testing.B) {
 			u := &Test{Int: 3}
+
 			b.ResetTimer()
 			b.ReportAllocs()
+
 			for i := 0; i < b.N; i++ {
 				_ = validator.New().Struct(u)
 			}
@@ -69,8 +78,10 @@ func BenchmarkAll(b *testing.B) {
 	b.Run("fender", func(b *testing.B) {
 		b.Run("v1", func(b *testing.B) {
 			u := &Test{}
+
 			b.ResetTimer()
 			b.ReportAllocs()
+
 			for i := 0; i < b.N; i++ {
 				_ = fender.All(context.TODO(),
 					fend.Field("int", u.Int, rule.Required[int], rule.NumberMin[int](1), rule.NumberMax[int](5)),
@@ -80,8 +91,10 @@ func BenchmarkAll(b *testing.B) {
 		b.Run("v2", func(b *testing.B) {
 			u := &Test{}
 			rules := fend.NewRules(rule.Required[int], rule.NumberMin[int](1), rule.NumberMax[int](5))
+
 			b.ResetTimer()
 			b.ReportAllocs()
+
 			for i := 0; i < b.N; i++ {
 				_ = fender.All(context.TODO(),
 					rules.Field("int", u.Int),
@@ -90,8 +103,10 @@ func BenchmarkAll(b *testing.B) {
 		})
 		b.Run("v3", func(b *testing.B) {
 			u := &Test{Int: 3}
+
 			b.ResetTimer()
 			b.ReportAllocs()
+
 			for i := 0; i < b.N; i++ {
 				_ = fender.All(context.TODO(),
 					fend.Field("int", u.Int, rule.Required[int], rule.NumberMin[int](1), rule.NumberMax[int](5)),
@@ -101,8 +116,10 @@ func BenchmarkAll(b *testing.B) {
 		b.Run("v4", func(b *testing.B) {
 			u := &Test{Int: 3}
 			rules := fend.NewRules(rule.Required[int], rule.NumberMin[int](1), rule.NumberMax[int](5))
+
 			b.ResetTimer()
 			b.ReportAllocs()
+
 			for i := 0; i < b.N; i++ {
 				_ = fender.All(context.TODO(),
 					rules.Field("int", u.Int),
