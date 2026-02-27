@@ -32,6 +32,7 @@ func (e *Error) Error() string {
 	for i, cause := range e.FendErrs {
 		causes[i] = cause.Error()
 	}
+
 	return strings.Join(causes, config.DelimiterFend)
 }
 
@@ -39,6 +40,7 @@ func (e *Error) First() error {
 	if errs := e.Errors(); len(errs) > 0 {
 		return errs[0]
 	}
+
 	return nil
 }
 
@@ -47,6 +49,7 @@ func (e *Error) Errors() []error {
 	for i, fendErr := range e.FendErrs {
 		causes[i] = fendErr
 	}
+
 	return causes
 }
 
@@ -59,5 +62,6 @@ func AsError(err error) *Error {
 	if errors.As(err, &fendErr) {
 		return fendErr
 	}
+
 	return nil
 }

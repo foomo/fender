@@ -11,6 +11,7 @@ func StringSize(expected int) StringRule {
 		if len(v) != expected {
 			return NewError(NameSize, Meta('d', expected))
 		}
+
 		return nil
 	}
 }
@@ -20,6 +21,7 @@ func StringNotSize(expected int) StringRule {
 		if len(v) == expected {
 			return NewError(NameSize, Meta('d', expected))
 		}
+
 		return nil
 	}
 }
@@ -29,6 +31,7 @@ func NumberSize[T Number](expected T) Rule[T] {
 		if v != expected {
 			return NewError(NameSize, Meta('d', expected))
 		}
+
 		return nil
 	}
 }
@@ -38,6 +41,7 @@ func NumberNotSize[T Number](expected T) Rule[T] {
 		if v == expected {
 			return NewError(NameSize, Meta('d', expected))
 		}
+
 		return nil
 	}
 }

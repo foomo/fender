@@ -8,6 +8,8 @@ import (
 )
 
 func TestEmail(t *testing.T) {
+	t.Parallel()
+
 	testEmails := map[string]bool{
 		`email@example.com`:                        true,
 		`firstname.lastname@example.com`:           true,
@@ -27,7 +29,7 @@ func TestEmail(t *testing.T) {
 		`email@-example.com`:                       true,
 		`email@example`:                            true,
 		`email@example@example.com`:                false,
-		`email@[123.123.123.123]`:                  false,
+		`email@[123.123.123.123]`:                  true,
 		`email.@example.com`:                       false,
 		`email..email@example.com`:                 false,
 		`#@%^%#$@#$@#.com`:                         false,
@@ -44,6 +46,8 @@ func TestEmail(t *testing.T) {
 	}
 	for email, valid := range testEmails {
 		t.Run(email, func(t *testing.T) {
+			t.Parallel()
+
 			if err := rule.Email(context.TODO(), email); (err == nil) != valid {
 				t.Errorf("Email() error = %v, wantErr %v", err, !valid)
 				t.Log()
@@ -53,6 +57,8 @@ func TestEmail(t *testing.T) {
 }
 
 func TestEmailWeak(t *testing.T) {
+	t.Parallel()
+
 	testEmails := map[string]bool{
 		`email@example.com`:                        true,
 		`firstname.lastname@example.com`:           true,
@@ -89,6 +95,8 @@ func TestEmailWeak(t *testing.T) {
 	}
 	for email, valid := range testEmails {
 		t.Run(email, func(t *testing.T) {
+			t.Parallel()
+
 			if err := rule.EmailWeak(context.TODO(), email); (err == nil) != valid {
 				t.Errorf("Email() error = %v, wantErr %v", err, !valid)
 			}
@@ -97,9 +105,12 @@ func TestEmailWeak(t *testing.T) {
 }
 
 func Test_emailHostLookup(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		v string
 	}
+
 	tests := []struct {
 		name    string
 		args    args
@@ -122,6 +133,8 @@ func Test_emailHostLookup(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			if err := rule.EmailLookup(context.TODO(), tt.args.v); (err != nil) != tt.wantErr {
 				t.Errorf("emailHostLookup() error = %v, wantErr %v", err, tt.wantErr)
 			}

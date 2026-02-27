@@ -12,6 +12,7 @@ func Suffix(expected string) StringRule {
 		if !strings.HasSuffix(v, expected) {
 			return NewError(NameSuffix, Meta('d', expected))
 		}
+
 		return nil
 	}
 }
@@ -21,6 +22,7 @@ func NoSuffix(expected string) StringRule {
 		if strings.HasSuffix(v, expected) {
 			return NewError(NameSuffix, Meta('d', expected))
 		}
+
 		return nil
 	}
 }

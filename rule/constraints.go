@@ -1,12 +1,14 @@
 package rule
 
 import (
-	"golang.org/x/exp/constraints"
+	"cmp"
+
+	"golang.org/x/exp/constraints" //nolint:exptostd // not all supported yet
 )
 
 type (
 	Integer = constraints.Integer
-	Ordered = constraints.Ordered
+	Ordered = cmp.Ordered
 	Float   = constraints.Float
 	Number  interface {
 		Integer | Float

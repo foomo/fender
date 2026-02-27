@@ -16,6 +16,7 @@ func Email(ctx context.Context, v string) error {
 	if _, err := mail.ParseAddress(v); err != nil {
 		return NewError(NameEmail, "parse")
 	}
+
 	return nil
 }
 
@@ -24,6 +25,7 @@ func EmailWeak(ctx context.Context, v string) error {
 	if !config.RegexEmailWeak.MatchString(v) {
 		return NewError(NameEmail, "weak")
 	}
+
 	return nil
 }
 
@@ -33,11 +35,15 @@ func EmailLookup(ctx context.Context, v string) error {
 	if at < 0 {
 		return NewError(NameEmail, "lookup")
 	}
+
 	host := v[at+1:]
-	if _, err := net.LookupMX(host); err != nil {
-		if _, err := net.LookupIP(host); err != nil {
+
+	r := net.Resolver{}
+	if _, err := r.LookupMX(ctx, host); err != nil {
+		if _, err := r.LookupIPAddr(ctx, host); err != nil {
 			return NewError(NameEmail, "lookup")
 		}
 	}
+
 	return nil
 }

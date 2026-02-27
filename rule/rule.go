@@ -19,6 +19,6 @@ type (
 	UInt64Rule    = Rule[uint64]
 	Float32Rule   = Rule[float32]
 	Float64Rule   = Rule[float64]
-	InterfaceRule = Rule[interface{}]
+	InterfaceRule = Rule[any]
 	DynamicRule   func(ctx context.Context) error
 )

@@ -11,6 +11,7 @@ func StringRange(min, max int) StringRule {
 		if len(v) < min || len(v) > max {
 			return NewError(NameRange, Meta('d', min), Meta('d', max))
 		}
+
 		return nil
 	}
 }
@@ -20,6 +21,7 @@ func StringNotRange(min, max int) StringRule {
 		if len(v) >= min || len(v) <= max {
 			return NewError(NameRange, Meta('d', min), Meta('d', max))
 		}
+
 		return nil
 	}
 }
@@ -29,6 +31,7 @@ func NumberRange[T Number](min, max T) Rule[T] {
 		if v < min || v > max {
 			return NewError(NameRange, Meta('d', min), Meta('d', max))
 		}
+
 		return nil
 	}
 }
@@ -38,6 +41,7 @@ func NumberNotRange[T Number](min, max T) Rule[T] {
 		if v >= min || v <= max {
 			return NewError(NameRange, Meta('d', min), Meta('d', max))
 		}
+
 		return nil
 	}
 }

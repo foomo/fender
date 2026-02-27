@@ -11,6 +11,7 @@ func StringMin(expected int) StringRule {
 		if len(v) < expected {
 			return NewError(NameMin, Meta('d', expected))
 		}
+
 		return nil
 	}
 }
@@ -20,6 +21,7 @@ func NumberMin[T Number](expected T) Rule[T] {
 		if v < expected {
 			return NewError(NameMin, Meta('d', expected))
 		}
+
 		return nil
 	}
 }

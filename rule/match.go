@@ -12,10 +12,12 @@ func Match(alias string, regexp *regexp.Regexp) StringRule {
 	if alias != "" {
 		name = Name(alias)
 	}
+
 	return func(ctx context.Context, v string) error {
 		if !regexp.MatchString(v) {
 			return NewError(name, regexp.String())
 		}
+
 		return nil
 	}
 }
@@ -25,10 +27,12 @@ func NotMatch(alias string, regexp *regexp.Regexp) StringRule {
 	if alias != "" {
 		name = Name(alias)
 	}
+
 	return func(ctx context.Context, v string) error {
 		if regexp.MatchString(v) {
 			return NewError(name, regexp.String())
 		}
+
 		return nil
 	}
 }

@@ -12,5 +12,6 @@ func UUID(ctx context.Context, v string) error {
 	if !config.RegexUUID.MatchString(v) {
 		return NewError(NameUUID)
 	}
+
 	return nil
 }

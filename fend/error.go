@@ -33,13 +33,16 @@ func (e *Error) Name() string {
 
 func (e *Error) Error() string {
 	var ret string
+
 	causes := make([]string, len(e.RuleErrs))
 	for i, ruleErr := range e.RuleErrs {
 		causes[i] = ruleErr.Error()
 	}
+
 	if e.Path != "" {
 		ret += e.Path + config.DelimiterFendName
 	}
+
 	return ret + strings.Join(causes, config.DelimiterRule)
 }
 
@@ -48,6 +51,7 @@ func (e *Error) Errors() []error {
 	for i, ruleErr := range e.RuleErrs {
 		causes[i] = ruleErr
 	}
+
 	return causes
 }
 
@@ -60,5 +64,6 @@ func AsError(err error) *Error {
 	if errors.As(err, &fendErr) {
 		return fendErr
 	}
+
 	return nil
 }

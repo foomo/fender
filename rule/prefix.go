@@ -12,6 +12,7 @@ func Prefix(expected string) StringRule {
 		if !strings.HasPrefix(v, expected) {
 			return NewError(NamePrefix, Meta('d', expected))
 		}
+
 		return nil
 	}
 }
@@ -21,6 +22,7 @@ func NoPrefix(expected string) StringRule {
 		if strings.HasPrefix(v, expected) {
 			return NewError(NamePrefix, Meta('d', expected))
 		}
+
 		return nil
 	}
 }

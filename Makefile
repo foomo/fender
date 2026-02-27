@@ -1,71 +1,101 @@
 .DEFAULT_GOAL:=help
+-include .makerc
 
-## === Tasks ===
+# --- Config ------------------------------------------------------------------
 
-.PHONY: gomod
-## Run go mod tidy
-tidy:
-	go mod tidy
+# Newline hack for error output
+define br
 
-.PHONY: outdated
-## Show outdated direct dependencies
-outdated:
-	go list -u -m -json all | go-mod-outdated -update -direct
+
+endef
+
+# --- Targets -----------------------------------------------------------------
+
+# This allows us to accept extra arguments
+%: .mise .lefthook
+	@:
+
+.PHONY: .mise
+# Install dependencies
+.mise:
+ifeq (, $(shell command -v mise))
+	$(error $(br)$(br)Please ensure you have 'mise' installed and activated!$(br)$(br)  $$ brew update$(br)  $$ brew install mise$(br)$(br)See the documentation: https://mise.jdx.dev/getting-started.html)
+endif
+	@mise install
+
+# Configure git hooks for lefthook
+.lefthook:
+	@lefthook install --reset-hooks-path
+
+### Tasks
 
 .PHONY: check
-## Run tests and linters
-check: test lint
+## Run lint & tests
+check: tidy generate lint test
 
-.PHONY: test
-## Run tests
-test:
-	gotestsum --format dots-v2 ./...
-
-.PHONY: bench
-## Run benchmarks
-bench:
-	go test -run ^$$ -bench . | prettybench
+.PHONY: tidy
+## Run go mod tidy
+tidy:
+	@echo "〉go mod tidy"
+	@go mod tidy
 
 .PHONY: lint
 ## Run linter
 lint:
-	golangci-lint run
+	@echo "〉go lint"
+	@golangci-lint run
 
 .PHONY: lint.fix
-## Fix lint violations
+## Run linter and fix violations
 lint.fix:
-	golangci-lint run --fix
+	@echo "〉go lint with --fix"
+	@golangci-lint run --fix
 
-## === Utils ===
+.PHONY: generate
+## Run go generate
+generate:
+	@echo "〉go generate"
+	@go generate ./...
 
+.PHONY: test
+## Run tests
+test:
+	@echo "〉go test"
+	@GO_TEST_TAGS=-skip go test -tags=safe -coverprofile=coverage.out ./...
+
+.PHONY: test.race
+## Run tests with -race
+test.race:
+	@GO_TEST_TAGS=-skip go test -tags=safe -coverprofile=coverage.out -race ./...
+
+.PHONY: test.update
+## Run tests with -update
+test.update:
+	@GO_TEST_TAGS=-skip go test -tags=safe -coverprofile=coverage.out -update ./...
+
+.PHONY: outdated
+## Show outdated direct dependencies
+outdated:
+	@echo "〉go mod outdated"
+	@go list -u -m -json all | go-mod-outdated -update -direct
+
+### Utils
+
+.PHONY: help
 ## Show help text
 help:
+	@echo "Keel\n"
+	@echo "Usage:\n  make [task]"
 	@awk '{ \
-			if ($$0 ~ /^.PHONY: [a-zA-Z\-\_0-9]+$$/) { \
-				helpCommand = substr($$0, index($$0, ":") + 2); \
-				if (helpMessage) { \
-					printf "\033[36m%-23s\033[0m %s\n", \
-						helpCommand, helpMessage; \
-					helpMessage = ""; \
-				} \
-			} else if ($$0 ~ /^[a-zA-Z\-\_0-9.]+:/) { \
-				helpCommand = substr($$0, 0, index($$0, ":")); \
-				if (helpMessage) { \
-					printf "\033[36m%-23s\033[0m %s\n", \
-						helpCommand, helpMessage"\n"; \
-					helpMessage = ""; \
-				} \
-			} else if ($$0 ~ /^##/) { \
-				if (helpMessage) { \
-					helpMessage = helpMessage"\n                        "substr($$0, 3); \
-				} else { \
-					helpMessage = substr($$0, 3); \
-				} \
-			} else { \
-				if (helpMessage) { \
-					print "\n                        "helpMessage"\n" \
-				} \
-				helpMessage = ""; \
-			} \
-		}' \
-		$(MAKEFILE_LIST)
+		if($$0 ~ /^### /){ \
+			if(help) printf "%-23s %s\n\n", cmd, help; help=""; \
+			printf "\n%s:\n", substr($$0,5); \
+		} else if($$0 ~ /^[a-zA-Z0-9._-]+:/){ \
+			cmd = substr($$0, 1, index($$0, ":")-1); \
+			if(help) printf "  %-23s %s\n", cmd, help; help=""; \
+		} else if($$0 ~ /^##/){ \
+			help = help ? help "\n                        " substr($$0,3) : substr($$0,3); \
+		} else if(help){ \
+			print "\n                        " help "\n"; help=""; \
+		} \
+	}' $(MAKEFILE_LIST)

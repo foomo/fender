@@ -11,6 +11,7 @@ func StringMax(expected int) StringRule {
 		if len(v) > expected {
 			return NewError(NameMax, Meta('d', expected))
 		}
+
 		return nil
 	}
 }
@@ -20,6 +21,7 @@ func NumberMax[T Number](expected T) Rule[T] {
 		if v > expected {
 			return NewError(NameMax, Meta('d', expected))
 		}
+
 		return nil
 	}
 }

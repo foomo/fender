@@ -27,9 +27,11 @@ func (e *Error) Error() string {
 	if len(e.Meta) > 0 {
 		s += config.DelimiterRuleMeta + e.Meta[0]
 	}
+
 	if len(e.Meta) > 1 {
 		s = fmt.Sprintf("%s[%s]", s, strings.Join(e.Meta[1:], ","))
 	}
+
 	return s
 }
 
@@ -38,6 +40,7 @@ func AsError(err error) *Error {
 	if errors.As(err, &fendErr) {
 		return fendErr
 	}
+
 	return nil
 }
 

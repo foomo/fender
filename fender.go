@@ -20,6 +20,7 @@ func AllFirst(ctx context.Context, fends ...fend.Fend) error {
 
 func Mode(ctx context.Context, mode fend.Mode, fends ...fend.Fend) error {
 	var cause []*fend.Error
+
 	for _, validator := range fends {
 		err := validator(ctx, mode)
 		if e, ok := err.(*fend.Error); ok { //nolint:errorlint
@@ -33,8 +34,10 @@ func Mode(ctx context.Context, mode fend.Mode, fends ...fend.Fend) error {
 			return err
 		}
 	}
+
 	if cause != nil {
 		return NewError(cause...)
 	}
+
 	return nil
 }

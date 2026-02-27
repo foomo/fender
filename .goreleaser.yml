@@ -1,2 +1,24 @@
+version: 2
+
+project_name: fender
+
+release:
+  github:
+    owner: foomo
+    name: fender
+  prerelease: auto
+
 builds:
   - skip: true
+
+archives:
+  - format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+
+changelog:
+  use: github-native

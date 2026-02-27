@@ -12,6 +12,7 @@ func Bool(expectd bool) BoolRule {
 		if v != expectd {
 			return NewError(NameBool, Meta('T', expectd))
 		}
+
 		return nil
 	}
 }
@@ -23,6 +24,7 @@ func StringBool(expectd bool) StringRule {
 		} else if b != expectd {
 			return NewError(NameBool, Meta('T', expectd))
 		}
+
 		return nil
 	}
 }
