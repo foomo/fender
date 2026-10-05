@@ -13,7 +13,13 @@ func URL(ctx context.Context, v string) error {
 		v = v[:i]
 	}
 
-	if value, err := url.ParseRequestURI(v); err != nil || value.Scheme == "" {
+	value, err := url.ParseRequestURI(v)
+	if err != nil || value.Scheme == "" {
+		return NewError(NameURL)
+	}
+
+	// http(s) URLs without a host are not usable destinations (e.g. "http://", "https:")
+	if (value.Scheme == "http" || value.Scheme == "https") && value.Host == "" {
 		return NewError(NameURL)
 	}
 
